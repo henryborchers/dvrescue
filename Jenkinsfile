@@ -18,6 +18,7 @@ pipeline {
                 stages {
                     stage('Build') {
                         steps {
+                            sh "git clone https://github.com/MediaArea/ZenLib.git"
                             cmakeBuild buildDir: 'build', installation: 'InSearchPath', steps: [[withCmake: true]]
                         }
                     }
