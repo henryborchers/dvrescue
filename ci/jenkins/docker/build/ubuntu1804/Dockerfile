@@ -6,4 +6,6 @@ RUN apt-get update -y && \
     git \
     libtool \
     automake \
+    zlib1g-dev \
+    pkg-config \
     build-essential

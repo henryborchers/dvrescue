@@ -26,6 +26,16 @@ pipeline {
                             }
                         }
                     }
+                    stage("Install MediaInfoLib"){
+                        steps{
+                            dir("MediaInfoLib"){
+                                git 'https://github.com/MediaArea/MediaInfoLib.git'
+                            }
+                            dir("MediaInfoLib/Project/GNU/Library"){
+                                sh "sh autogen.sh && ./configure --prefix=${WORKSPACE}/.local && make && make install"
+                            }
+                        }
+                    }
                     stage('Build') {
                         steps {
                             cmakeBuild buildDir: 'build', installation: 'InSearchPath', steps: [[withCmake: true]]
