@@ -16,11 +16,13 @@ pipeline {
                     }
                 }
                 stages {
-                    stage("Get Dependencies"){
+                    stage("Install ZenLib"){
                         steps{
-                            git 'https://github.com/MediaArea/ZenLib.git'
+                            dir("ZenLib"){
+                                git 'https://github.com/MediaArea/ZenLib.git'
+                            }
                             dir("ZenLib/Project/GNU/Library"){
-                                sh "sh autogen.sh && ./configure --prefix=/usr/local && make && sudo make install"
+                                sh "sh autogen.sh && ./configure --prefix=${WORKSPACE}/.local && make && make install"
                             }
                         }
                     }

@@ -4,4 +4,6 @@ RUN apt-get update -y && \
     apt-get install -y \
     cmake \
     git \
+    libtool \
+    automake \
     build-essential
