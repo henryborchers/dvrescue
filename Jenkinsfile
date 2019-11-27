@@ -19,6 +19,9 @@ pipeline {
                     stage("Get Dependencies"){
                         steps{
                             git 'https://github.com/MediaArea/ZenLib.git'
+                            dir("ZenLib/Project/GNU/Library"){
+                                sh "sh autogen.sh && ./configure --prefix=/usr/local && make && sudo make install"
+                            }
                         }
                     }
                     stage('Build') {
