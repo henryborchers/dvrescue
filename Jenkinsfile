@@ -18,7 +18,7 @@ pipeline {
                 stages {
                     stage("Get Dependencies"){
                         steps{
-                            sh "git clone https://github.com/MediaArea/ZenLib.git"
+                            git 'https://github.com/MediaArea/ZenLib.git'
                         }
                     }
                     stage('Build') {
