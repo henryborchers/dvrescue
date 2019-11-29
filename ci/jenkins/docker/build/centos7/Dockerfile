@@ -2,8 +2,7 @@ FROM centos:7
 RUN yum -y update && \
     yum groupinstall -y "Development Tools" && \
     yum install -y epel-release && \
-    yum install -y cmake3 git zlib-devel
-
+    yum install -y cmake3 git zlib-devel libcurl-devel
 
 RUN alternatives --install /usr/local/bin/cmake cmake /usr/bin/cmake 10 \
     --slave /usr/local/bin/ctest ctest /usr/bin/ctest \

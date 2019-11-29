@@ -15,4 +15,5 @@ RUN apt-get install -y cmake \
     libtool \
     automake \
     pkg-config \
+    libcurl4-gnutls-dev \
     zlib1g-dev

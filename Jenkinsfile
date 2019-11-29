@@ -12,7 +12,7 @@ pipeline {
                 axes {
                     axis {
                         name 'PLATFORM'
-                        values 'ci/jenkins/docker/build/centos6/Dockerfile', 'ci/jenkins/docker/build/centos7/Dockerfile', "ci/jenkins/docker/build/centos8/Dockerfile", "ci/jenkins/docker/build/fedora31/Dockerfile", "ci/jenkins/docker/build/ubuntu1604/Dockerfile" ,"ci/jenkins/docker/build/ubuntu1804/Dockerfile"
+                        values  'ci/jenkins/docker/build/centos7/Dockerfile', "ci/jenkins/docker/build/centos8/Dockerfile", "ci/jenkins/docker/build/fedora31/Dockerfile", "ci/jenkins/docker/build/ubuntu1604/Dockerfile" ,"ci/jenkins/docker/build/ubuntu1804/Dockerfile"
                     }
                 }
                 stages {
@@ -21,9 +21,16 @@ pipeline {
                             dir("ZenLib"){
                                 git 'https://github.com/MediaArea/ZenLib.git'
                             }
-                            dir("ZenLib/Project/GNU/Library"){
-                                sh "sh autogen.sh && ./configure --prefix=${WORKSPACE}/.local && make && make install"
+                            dir("ZenLib/build"){
+                                sh "cmake ${WORKSPACE}/ZenLib/Project/CMake -DCMAKE_INSTALL_PREFIX:PATH=${WORKSPACE}/.local"
+                                sh "cmake --build . --target install"
                             }
+//                            dir("ZenLib/Project/CMake"){
+//
+//                            }
+//                            dir("ZenLib/Project/GNU/Library"){
+//                                sh "sh autogen.sh && ./configure --prefix=${WORKSPACE}/.local && make && make install"
+//                            }
                         }
                     }
                     stage("Install MediaInfoLib"){
@@ -31,14 +38,34 @@ pipeline {
                             dir("MediaInfoLib"){
                                 git 'https://github.com/MediaArea/MediaInfoLib.git'
                             }
-                            dir("MediaInfoLib/Project/GNU/Library"){
-                                sh "sh autogen.sh && ./configure --prefix=${WORKSPACE}/.local && make && make install"
+//                            cmakeBuild(
+//                                buildDir: 'build',
+//                                sourceDir: 'MediaInfoLib/Project/CMake',
+//                                cmakeArgs: "${WORKSPACE}/MediaInfoLib/Project/CMake -DCMAKE_INSTALL_PREFIX:PATH=${WORKSPACE}/.local",
+//                                installation: 'InSearchPath',
+//                                steps: [
+//                                    [args: '--target install', withCmake: true]
+//                                ]
+//                            )
+                            dir("MediaInfoLib/build"){
+                                sh "cmake ${WORKSPACE}/MediaInfoLib/Project/CMake -DCMAKE_INSTALL_PREFIX:PATH=${WORKSPACE}/.local"
+                                sh "cmake --build . --target install"
                             }
+//                            dir("MediaInfoLib/Project/GNU/Library"){
+//                                sh "sh autogen.sh && ./configure --prefix=${WORKSPACE}/.local && make && make install"
+//                            }
                         }
                     }
                     stage('Build') {
                         steps {
-                            cmakeBuild buildDir: 'build', installation: 'InSearchPath', steps: [[withCmake: true]]
+                            cmakeBuild(
+                                buildDir: 'build',
+                                cmakeArgs: "-DCMAKE_INSTALL_PREFIX:PATH=${WORKSPACE}/.local -DCMAKE_MODULE_PATH:PATH=${WORKSPACE}/.local",
+                                installation: 'InSearchPath',
+                                steps: [
+                                    [withCmake: true]
+                                ]
+                            )
                         }
                     }
                 }

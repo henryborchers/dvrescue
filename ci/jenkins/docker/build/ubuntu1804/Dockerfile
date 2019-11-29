@@ -8,4 +8,5 @@ RUN apt-get update -y && \
     automake \
     zlib1g-dev \
     pkg-config \
+    libcurl4-gnutls-dev \
     build-essential
