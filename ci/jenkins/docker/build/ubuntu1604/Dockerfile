@@ -3,7 +3,7 @@ FROM ubuntu:16.04
 
 RUN apt-get update -y && \
     apt-get install -y \
-    apt-transport-https ca-certificates gnupg software-properties-common wget build-essential
+    apt-transport-https ca-certificates gnupg software-properties-common wget build-essential sudo
 
 RUN wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | apt-key add -
 
@@ -17,3 +17,11 @@ RUN apt-get install -y cmake \
     pkg-config \
     libcurl4-gnutls-dev \
     zlib1g-dev
+
+
+ARG USER_ID=1000
+ARG GROUP_ID=1000
+RUN groupadd -g $GROUP_ID user && \
+    useradd -u $USER_ID -s /bin/sh -m -d /home/user -g user user && \
+    usermod -aG sudo user && \
+    echo 'user ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers

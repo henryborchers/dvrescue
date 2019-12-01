@@ -7,12 +7,19 @@ pipeline {
                     dockerfile {
                         filename "${PLATFORM}"
                         label 'linux && docker'
+                        additionalBuildArgs '--build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g)'
                     }
                 }
                 axes {
                     axis {
                         name 'PLATFORM'
-                        values  'ci/jenkins/docker/build/centos7/Dockerfile', "ci/jenkins/docker/build/centos8/Dockerfile", "ci/jenkins/docker/build/fedora31/Dockerfile", "ci/jenkins/docker/build/ubuntu1604/Dockerfile" ,"ci/jenkins/docker/build/ubuntu1804/Dockerfile"
+                        values(
+                            'ci/jenkins/docker/build/centos7/Dockerfile',
+                            "ci/jenkins/docker/build/centos8/Dockerfile",
+                            "ci/jenkins/docker/build/fedora31/Dockerfile",
+                            "ci/jenkins/docker/build/ubuntu1604/Dockerfile" ,
+                            "ci/jenkins/docker/build/ubuntu1804/Dockerfile"
+                            )
                     }
                 }
                 stages {
@@ -22,8 +29,8 @@ pipeline {
                                 git 'https://github.com/MediaArea/ZenLib.git'
                             }
                             dir("ZenLib/build"){
-                                sh "cmake ${WORKSPACE}/ZenLib/Project/CMake -DCMAKE_INSTALL_PREFIX:PATH=${WORKSPACE}/.local"
-                                sh "cmake --build . --target install"
+                                sh "cmake ${WORKSPACE}/ZenLib/Project/CMake"
+                                sh "sudo cmake --build . --target install"
                             }
                         }
                     }
@@ -33,8 +40,8 @@ pipeline {
                                 git 'https://github.com/MediaArea/MediaInfoLib.git'
                             }
                             dir("MediaInfoLib/build"){
-                                sh "cmake ${WORKSPACE}/MediaInfoLib/Project/CMake -DCMAKE_INSTALL_PREFIX:PATH=${WORKSPACE}/.local"
-                                sh "cmake --build . --target install"
+                                sh "cmake ${WORKSPACE}/MediaInfoLib/Project/CMake"
+                                sh "sudo cmake --build . --target install"
                             }
                         }
                     }
@@ -42,12 +49,25 @@ pipeline {
                         steps {
                             cmakeBuild(
                                 buildDir: 'build',
-                                cmakeArgs: "-DCMAKE_INSTALL_PREFIX:PATH=${WORKSPACE}/.local -DCMAKE_MODULE_PATH:PATH=${WORKSPACE}/.local",
                                 installation: 'InSearchPath',
                                 steps: [
                                     [withCmake: true]
                                 ]
                             )
+                            sh "build/Source/dvrescue --version"
+                        }
+                    }
+                    stage('Install') {
+                        steps {
+                           dir("build"){
+                               sh "sudo cmake --build . --target install"
+                           }
+                            sh "dvrescue --version"
+                        }
+                        post{
+                            failure{
+                                sh "ldd /usr/local/bin/dvrescue"
+                            }
                         }
                     }
                 }
