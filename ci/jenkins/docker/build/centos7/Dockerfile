@@ -17,3 +17,10 @@ RUN alternatives --install /usr/local/bin/cmake cmake /usr/bin/cmake3 20 \
     --family cmake
 
 RUN cmake --version
+
+ARG USER_ID=1000
+ARG GROUP_ID=1000
+
+RUN groupadd -g $GROUP_ID user && \
+    useradd -u $USER_ID -s /bin/sh -m -d /home/user -g user user
+ENV PATH="/home/user/local/bin:${PATH}"
