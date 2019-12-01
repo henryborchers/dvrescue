@@ -25,12 +25,6 @@ pipeline {
                                 sh "cmake ${WORKSPACE}/ZenLib/Project/CMake -DCMAKE_INSTALL_PREFIX:PATH=${WORKSPACE}/.local"
                                 sh "cmake --build . --target install"
                             }
-//                            dir("ZenLib/Project/CMake"){
-//
-//                            }
-//                            dir("ZenLib/Project/GNU/Library"){
-//                                sh "sh autogen.sh && ./configure --prefix=${WORKSPACE}/.local && make && make install"
-//                            }
                         }
                     }
                     stage("Install MediaInfoLib"){
@@ -38,22 +32,10 @@ pipeline {
                             dir("MediaInfoLib"){
                                 git 'https://github.com/MediaArea/MediaInfoLib.git'
                             }
-//                            cmakeBuild(
-//                                buildDir: 'build',
-//                                sourceDir: 'MediaInfoLib/Project/CMake',
-//                                cmakeArgs: "${WORKSPACE}/MediaInfoLib/Project/CMake -DCMAKE_INSTALL_PREFIX:PATH=${WORKSPACE}/.local",
-//                                installation: 'InSearchPath',
-//                                steps: [
-//                                    [args: '--target install', withCmake: true]
-//                                ]
-//                            )
                             dir("MediaInfoLib/build"){
                                 sh "cmake ${WORKSPACE}/MediaInfoLib/Project/CMake -DCMAKE_INSTALL_PREFIX:PATH=${WORKSPACE}/.local"
                                 sh "cmake --build . --target install"
                             }
-//                            dir("MediaInfoLib/Project/GNU/Library"){
-//                                sh "sh autogen.sh && ./configure --prefix=${WORKSPACE}/.local && make && make install"
-//                            }
                         }
                     }
                     stage('Build') {
