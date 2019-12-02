@@ -5,7 +5,7 @@ pipeline {
             matrix {
                 agent {
                     dockerfile {
-                        filename "${PLATFORM}"
+                        filename "ci/jenkins/docker/build/${PLATFORM}/Dockerfile"
                         label 'linux && docker'
                         additionalBuildArgs '--build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g)'
                     }
@@ -14,11 +14,11 @@ pipeline {
                     axis {
                         name 'PLATFORM'
                         values(
-                            'ci/jenkins/docker/build/centos7/Dockerfile',
-                            "ci/jenkins/docker/build/centos8/Dockerfile",
-                            "ci/jenkins/docker/build/fedora31/Dockerfile",
-                            "ci/jenkins/docker/build/ubuntu1604/Dockerfile",
-                            "ci/jenkins/docker/build/ubuntu1804/Dockerfile"
+                            'centos7',
+                            'centos8',
+                            'fedora31',
+                            'ubuntu1604',
+                            'ubuntu1804'
                             )
                     }
                 }
