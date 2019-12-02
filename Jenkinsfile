@@ -94,5 +94,40 @@ pipeline {
                 }
             }
         }
+        stage("Testing Install Package"){
+            matrix{
+                agent any
+//                 agent {
+//                     dockerfile {
+//                         filename "ci/jenkins/docker/build/${PLATFORM}/Dockerfile"
+//                         label 'linux && docker'
+//                         additionalBuildArgs '--build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g)'
+//                     }
+//                 }
+                axes {
+                    axis {
+                        name 'PLATFORM'
+                        values(
+                            'centos-7',
+                            'centos-8',
+                            'fedora-31',
+                            'ubuntu-16.04',
+                            'ubuntu-18.04'
+                            )
+                    }
+                }
+                stages {
+                    stage("Install Package"){
+                        steps{
+                            echo "Testing installing on ${PLATFORM}"
+                            script{
+                                def parts = "${PLATFORM}".split('-')
+                                echo "Creating a new container based on ${parts[0]}:${parts[1]}"
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
