@@ -25,3 +25,5 @@ RUN groupadd -g $GROUP_ID user && \
     useradd -u $USER_ID -s /bin/sh -m -d /home/user -g user user && \
     usermod -aG sudo user && \
     echo 'user ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
+ENV CPACK_GENERATOR=DEB

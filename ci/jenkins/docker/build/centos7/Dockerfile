@@ -2,7 +2,7 @@ FROM centos:7
 RUN yum -y update && \
     yum groupinstall -y "Development Tools" && \
     yum install -y epel-release && \
-    yum install -y cmake3 git zlib-devel libcurl-devel sudo
+    yum install -y cmake3 git zlib-devel libcurl-devel sudo rpmdevtools
 
 #RUN alternatives --install /usr/local/bin/cmake cmake /usr/bin/cmake 10 \
 #    --slave /usr/local/bin/ctest ctest /usr/bin/ctest \
@@ -23,3 +23,5 @@ RUN groupadd -g $GROUP_ID user && \
     useradd -u $USER_ID -s /bin/sh -m -d /home/user -g user user && \
     usermod -aG wheel user && \
     echo 'user ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
+ENV CPACK_GENERATOR=RPM

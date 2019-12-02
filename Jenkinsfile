@@ -17,7 +17,7 @@ pipeline {
                             'ci/jenkins/docker/build/centos7/Dockerfile',
                             "ci/jenkins/docker/build/centos8/Dockerfile",
                             "ci/jenkins/docker/build/fedora31/Dockerfile",
-                            "ci/jenkins/docker/build/ubuntu1604/Dockerfile" ,
+                            "ci/jenkins/docker/build/ubuntu1604/Dockerfile",
                             "ci/jenkins/docker/build/ubuntu1804/Dockerfile"
                             )
                     }
@@ -57,6 +57,14 @@ pipeline {
                             sh "build/Source/dvrescue --version"
                         }
                     }
+                    stage("Package"){
+                        steps{
+                            dir("build"){
+                            // This environment variable is set in the docker file
+                                sh 'cpack -G $CPACK_GENERATOR'
+                            }
+                        }
+                    }
                     stage('Install') {
                         steps {
                            dir("build"){
@@ -70,6 +78,7 @@ pipeline {
                             }
                         }
                     }
+
                 }
                 post{
                     cleanup{
