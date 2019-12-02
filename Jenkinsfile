@@ -64,6 +64,13 @@ pipeline {
                                 sh 'cpack -G $CPACK_GENERATOR'
                             }
                         }
+                        post{
+                            success{
+                                dir("build"){
+                                    stash includes: '*.rpm,*.deb', name: "${PLATFORM}-PACKAGE"
+                                }
+                            }
+                        }
                     }
                     stage('Install') {
                         steps {
