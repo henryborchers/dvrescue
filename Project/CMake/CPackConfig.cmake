@@ -1,5 +1,5 @@
 set(CPACK_PACKAGE_CONTACT "Jerome Martinez <Info@MediaArea.net>")
-set(CPACK_DEBIAN_PACKAGE_DEPENDS "libzen>=0.4.37;libmediainfo>=19.09")
+set(CPACK_DEBIAN_PACKAGE_DEPENDS "'libzen>=0.4.37';'libmediainfo>=19.09'")
 set(CPACK_DEBIAN_PACKAGE_SECTION "utils")
 set(CPACK_PACKAGE_HOMEPAGE_URL "https://MediaArea.net/DVRescue")
 set(CPACK_RESOURCE_FILE_LICENSE "${PROJECT_SOURCE_DIR}/LICENSE")

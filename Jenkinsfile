@@ -14,10 +14,10 @@ pipeline {
                     axis {
                         name 'PLATFORM'
                         values(
-                            'centos-7',
-                            'centos-8',
-                            'fedora-31',
-                            'ubuntu-16.04',
+//                             'centos-7',
+//                             'centos-8',
+//                             'fedora-31',
+//                             'ubuntu-16.04',
                             'ubuntu-18.04'
                             )
                     }
@@ -108,10 +108,10 @@ pipeline {
                     axis {
                         name 'PLATFORM'
                         values(
-                            'centos-7',
-                            'centos-8',
-                            'fedora-31',
-                            'ubuntu-16.04',
+//                             'centos-7',
+//                             'centos-8',
+//                             'fedora-31',
+//                             'ubuntu-16.04',
                             'ubuntu-18.04'
                             )
                     }
@@ -128,9 +128,12 @@ pipeline {
                                 def dockerImage = "${parts[0]}:${parts[1]}"
                                 echo "Creating a new container based on ${dockerImage}"
                                 def test_machine = docker.image("${dockerImage}")
-                                test_machine.inside {
+                                test_machine.inside("--user root") {
                                     unstash "${PLATFORM}-PACKAGE"
                                     sh "ls -la"
+                                    sh "apt update && apt install -y libmediainfo-dev"
+                                    sh "dpkg -i dvrescue-0.1.1-Linux.deb"
+//                                     sh "whoami"
                                 }
                             }
                         }
