@@ -1,12 +1,11 @@
 cmake_minimum_required(VERSION 3.6)
 project(dvrescue
-        #    DESCRIPTION
-        #        "Data migration from DV tapes into digital files suitable for long-term preservation. Archivist-made software that supports data migration from DV tapes into digital files suitable for long-term preservation"
-        #    HOMEPAGE_URL "https://MediaArea.net/DVRescue"
-        VERSION 0.19.11
+            DESCRIPTION
+                "Data migration from DV tapes into digital files suitable for long-term preservation. Archivist-made software that supports data migration from DV tapes into digital files suitable for long-term preservation"
+        VERSION "0.19.11"
         LANGUAGES CXX
         )
-
+set(CMAKE_PROJECT_HOMEPAGE_URL "https://MediaArea.net/DVRescue")
 find_package(ZenLib REQUIRED)
 find_package(MediaInfoLib REQUIRED)
 

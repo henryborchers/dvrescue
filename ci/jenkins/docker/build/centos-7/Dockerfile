@@ -2,7 +2,14 @@ FROM centos:7
 RUN yum -y update && \
     yum groupinstall -y "Development Tools" && \
     yum install -y epel-release && \
-    yum install -y cmake3 git zlib-devel libcurl-devel sudo rpmdevtools
+    yum install -y \
+    cmake3 \
+    git \
+    zlib-devel \
+    libcurl-devel \
+    sudo \
+    rpmdevtools \
+    ninja-build
 
 #RUN alternatives --install /usr/local/bin/cmake cmake /usr/bin/cmake 10 \
 #    --slave /usr/local/bin/ctest ctest /usr/bin/ctest \
@@ -25,3 +32,19 @@ RUN groupadd -g $GROUP_ID user && \
     echo 'user ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
 ENV CPACK_GENERATOR=RPM
+ENV CMAKE_GENERATOR=Ninja
+ENV PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig
+RUN mkdir -p /deps/ZenLib && \
+    git clone https://github.com/MediaArea/ZenLib.git /deps/ZenLib/source && \
+    mkdir /deps/ZenLib/build && \
+    cd /deps/ZenLib/build && \
+    cmake -S /deps/ZenLib/source/Project/CMake &&\
+    cmake --build . --target install && \
+    rm -rf /deps/ZenLib
+
+RUN git clone https://github.com/MediaArea/MediaInfoLib.git /deps/MediaInfoLib/source && \
+    mkdir /deps/MediaInfoLib/build && \
+    cd /deps/MediaInfoLib/build && \
+    cmake -S /deps/MediaInfoLib/source/Project/CMake -G Ninja && \
+    cmake --build . --target install && \
+    rm -rf /deps/MediaInfoLib

@@ -14,38 +14,16 @@ pipeline {
                     axis {
                         name 'PLATFORM'
                         values(
-//                             'centos-7',
-//                             'centos-8',
-//                             'fedora-31',
-//                             'ubuntu-16.04',
+                            'centos-7',
+                            'centos-8',
+                            'fedora-31',
+                            'ubuntu-16.04',
                             'ubuntu-18.04'
                             )
                     }
                 }
                 stages {
-                    stage("Install ZenLib"){
-                        steps{
-                            dir("ZenLib"){
-                                git 'https://github.com/MediaArea/ZenLib.git'
-                            }
-                            dir("ZenLib/build"){
-                                sh "cmake ${WORKSPACE}/ZenLib/Project/CMake"
-                                sh "sudo cmake --build . --target install"
-                            }
-                        }
-                    }
-                    stage("Install MediaInfoLib"){
-                        steps{
-                            dir("MediaInfoLib"){
-                                git 'https://github.com/MediaArea/MediaInfoLib.git'
-                            }
-                            dir("MediaInfoLib/build"){
-                                sh "cmake ${WORKSPACE}/MediaInfoLib/Project/CMake"
-                                sh "sudo cmake --build . --target install"
-                            }
-                        }
-                    }
-                    stage('Build') {
+                    stage('Build dvrescue') {
                         steps {
                             cmakeBuild(
                                 buildDir: 'build',
@@ -57,18 +35,37 @@ pipeline {
                             sh "build/Source/dvrescue --version"
                         }
                     }
-                    stage("Package"){
+                    stage("Package dvrescue"){
                         steps{
                             dir("build"){
                             // This environment variable is set in the docker file
-                                sh 'cpack -G $CPACK_GENERATOR'
+                                sh 'cpack -G $CPACK_GENERATOR --verbose --debug'
+
+
                             }
                         }
                         post{
                             success{
                                 dir("build"){
                                     stash includes: '*.rpm,*.deb', name: "${PLATFORM}-PACKAGE"
+                                    script{
+                                        if(PLATFORM.contains("ubuntu")){
+                                            sh "cat ${findFiles(glob: '**/control')[0]}"
+                                        }
+                                         if(PLATFORM.contains("centos") || PLATFORM.contains("fedora")){
+                                            sh "cat ${findFiles(glob: '**/dvrescue.spec')[0]}"
+                                        }
+                                    }
                                 }
+
+                            }
+                            cleanup{
+                                cleanWs(
+                                    patterns: [
+                                            [pattern: 'build/*.rpm', type: 'INCLUDE'],
+                                            [pattern: 'build/*.deb', type: 'INCLUDE']
+                                        ]
+                                    )
                             }
                         }
                     }
@@ -80,8 +77,8 @@ pipeline {
                             sh "dvrescue --version"
                         }
                         post{
-                            failure{
-                                sh "ldd /usr/local/bin/dvrescue"
+                            cleanup{
+                                sh "sudo rm -rf build"
                             }
                         }
                     }
@@ -97,21 +94,14 @@ pipeline {
         stage("Testing Install Package"){
             matrix{
                 agent any
-//                 agent {
-//                     dockerfile {
-//                         filename "ci/jenkins/docker/build/${PLATFORM}/Dockerfile"
-//                         label 'linux && docker'
-//                         additionalBuildArgs '--build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g)'
-//                     }
-//                 }
                 axes {
                     axis {
                         name 'PLATFORM'
                         values(
-//                             'centos-7',
-//                             'centos-8',
-//                             'fedora-31',
-//                             'ubuntu-16.04',
+                            'centos-7',
+                            'centos-8',
+                            'fedora-31',
+                            'ubuntu-16.04',
                             'ubuntu-18.04'
                             )
                     }
@@ -130,11 +120,27 @@ pipeline {
                                 def test_machine = docker.image("${dockerImage}")
                                 test_machine.inside("--user root") {
                                     unstash "${PLATFORM}-PACKAGE"
-                                    sh "ls -la"
-                                    sh "apt update && apt install -y libmediainfo-dev"
-                                    sh "dpkg -i dvrescue-0.1.1-Linux.deb"
-//                                     sh "whoami"
+
+                                    if(PLATFORM.contains("ubuntu")){
+                                        sh "apt update && apt-get install -y -f ./${findFiles(glob: '*.deb')[0]}"
+                                    }
+
+                                    if(PLATFORM.contains("fedora")){
+                                        sh "dnf -y localinstall ./${findFiles(glob: '*.rpm')[0]}"
+                                    }
+                                    if(PLATFORM.contains("centos")){
+                                        sh "yum -y update"
+                                        sh "yum install -y epel-release"
+                                        sh "yum -y localinstall ./${findFiles(glob: '*.rpm')[0]}"
+                                    }
+
+                                    sh "dvrescue --version"
                                 }
+                            }
+                        }
+                        post{
+                            cleanup{
+                                cleanWs()
                             }
                         }
                     }
