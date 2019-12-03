@@ -133,7 +133,8 @@ pipeline {
                                     sh "ls -la"
                                     sh "apt update && apt install -y libmediainfo-dev"
                                     sh "dpkg -i dvrescue-0.19.11-Linux.deb"
-//                                     sh "whoami"
+                                    sh "which dvrescue"
+                                    sh "dvrescue --version"
                                 }
                             }
                         }
