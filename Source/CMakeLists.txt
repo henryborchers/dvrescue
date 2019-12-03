@@ -14,6 +14,8 @@ target_include_directories(dvrescue
 
 target_link_libraries(dvrescue PRIVATE mediainfo)
 set_target_properties(dvrescue PROPERTIES
-        CXX_STANDARD 11)
+        CXX_STANDARD 11
+        INSTALL_RPATH_USE_LINK_PATH true
+        )
 install(TARGETS dvrescue RUNTIME DESTINATION bin)
 

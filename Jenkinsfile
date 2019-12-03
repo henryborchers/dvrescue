@@ -5,7 +5,7 @@ pipeline {
             matrix {
                 agent {
                     dockerfile {
-                        filename "${PLATFORM}"
+                        filename "ci/jenkins/docker/build/${PLATFORM}/Dockerfile"
                         label 'linux && docker'
                         additionalBuildArgs '--build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g)'
                     }
@@ -13,25 +13,24 @@ pipeline {
                 axes {
                     axis {
                         name 'PLATFORM'
-                        values  'ci/jenkins/docker/build/centos7/Dockerfile', "ci/jenkins/docker/build/centos8/Dockerfile", "ci/jenkins/docker/build/fedora31/Dockerfile", "ci/jenkins/docker/build/ubuntu1604/Dockerfile" ,"ci/jenkins/docker/build/ubuntu1804/Dockerfile"
+                        values(
+                            'centos-7',
+                            'centos-8',
+                            'fedora-31',
+                            'ubuntu-16.04',
+                            'ubuntu-18.04'
+                            )
                     }
-                }
-                environment{
-                    PATH="/home/user/.local/bin:${PATH}"
                 }
                 stages {
                     stage("Install ZenLib"){
                         steps{
-                            sh "ls -la /home/user"
-
-                            sh "echo $PATH"
-                            sh "whoami"
                             dir("ZenLib"){
                                 git 'https://github.com/MediaArea/ZenLib.git'
                             }
                             dir("ZenLib/build"){
-                                sh "cmake ${WORKSPACE}/ZenLib/Project/CMake -DCMAKE_INSTALL_PREFIX:PATH=/home/user/.local"
-                                sh "cmake --build . --target install"
+                                sh "cmake ${WORKSPACE}/ZenLib/Project/CMake"
+                                sh "sudo cmake --build . --target install"
                             }
                         }
                     }
@@ -41,8 +40,8 @@ pipeline {
                                 git 'https://github.com/MediaArea/MediaInfoLib.git'
                             }
                             dir("MediaInfoLib/build"){
-                                sh "cmake ${WORKSPACE}/MediaInfoLib/Project/CMake -DCMAKE_INSTALL_PREFIX:PATH=/home/user/.local"
-                                sh "cmake --build . --target install"
+                                sh "cmake ${WORKSPACE}/MediaInfoLib/Project/CMake"
+                                sh "sudo cmake --build . --target install"
                             }
                         }
                     }
@@ -50,7 +49,6 @@ pipeline {
                         steps {
                             cmakeBuild(
                                 buildDir: 'build',
-                                cmakeArgs: "-DCMAKE_INSTALL_PREFIX:PATH=/home/user/.local -DCMAKE_MODULE_PATH:PATH=/home/user/.local",
                                 installation: 'InSearchPath',
                                 steps: [
                                     [withCmake: true]
@@ -59,34 +57,75 @@ pipeline {
                             sh "build/Source/dvrescue --version"
                         }
                     }
-                    stage('Install') {
-                        steps {
-                            cmakeBuild(
-                                buildDir: 'build',
-                                cmakeArgs: "-DCMAKE_INSTALL_PREFIX:PATH=/home/user/.local -DCMAKE_MODULE_PATH:PATH=/home/user/.local",
-                                installation: 'InSearchPath',
-                                steps: [
-//                                    [withCmake: true]
-                                    [args: '--target install', withCmake: true]
-                                ]
-                            )
-//                            dir("build"){
-//                                sh "make install"
-//                            }
-
-                            sh "echo $PATH"
-                            sh "whoami"
-                            sh "ls -la /home/user/.local/bin"
-                            sh(script: "which dvrescue", returnStatus: true)
-                            sh(script: "cd /home/user/.local/bin && ls -la", returnStatus: true)
-//                                sh(script: "which dvrescue", returnStatus: true)
-                            sh "dvrescue --version"
+                    stage("Package"){
+                        steps{
+                            dir("build"){
+                            // This environment variable is set in the docker file
+                                sh 'cpack -G $CPACK_GENERATOR'
+                            }
+                        }
+                        post{
+                            success{
+                                dir("build"){
+                                    stash includes: '*.rpm,*.deb', name: "${PLATFORM}-PACKAGE"
+                                }
+                            }
                         }
                     }
+                    stage('Install') {
+                        steps {
+                           dir("build"){
+                               sh "sudo cmake --build . --target install"
+                           }
+                            sh "dvrescue --version"
+                        }
+                        post{
+                            failure{
+                                sh "ldd /usr/local/bin/dvrescue"
+                            }
+                        }
+                    }
+
                 }
                 post{
                     cleanup{
                         cleanWs()
+                    }
+                }
+            }
+        }
+        stage("Testing Install Package"){
+            matrix{
+                agent any
+//                 agent {
+//                     dockerfile {
+//                         filename "ci/jenkins/docker/build/${PLATFORM}/Dockerfile"
+//                         label 'linux && docker'
+//                         additionalBuildArgs '--build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g)'
+//                     }
+//                 }
+                axes {
+                    axis {
+                        name 'PLATFORM'
+                        values(
+                            'centos-7',
+                            'centos-8',
+                            'fedora-31',
+                            'ubuntu-16.04',
+                            'ubuntu-18.04'
+                            )
+                    }
+                }
+                stages {
+                    stage("Install Package"){
+                        steps{
+                            echo "Testing installing on ${PLATFORM}"
+                            script{
+                                def parts = "${PLATFORM}".split('-')
+                                def dockerImage = "${parts[0]}:${parts[1]}"
+                                echo "Creating a new container based on ${dockerImage}"
+                            }
+                        }
                     }
                 }
             }
