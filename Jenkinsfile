@@ -118,12 +118,20 @@ pipeline {
                 }
                 stages {
                     stage("Install Package"){
+                        options{
+                             skipDefaultCheckout true
+                        }
                         steps{
                             echo "Testing installing on ${PLATFORM}"
                             script{
                                 def parts = "${PLATFORM}".split('-')
                                 def dockerImage = "${parts[0]}:${parts[1]}"
                                 echo "Creating a new container based on ${dockerImage}"
+                                def test_machine = docker.image("${dockerImage}")
+                                test_machine.inside {
+                                    unstash "${PLATFORM}-PACKAGE"
+                                    sh "ls -la"
+                                }
                             }
                         }
                     }
