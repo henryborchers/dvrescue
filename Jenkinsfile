@@ -17,8 +17,8 @@ pipeline {
 //                             'centos-7',
 //                             'centos-8',
 //                             'fedora-31',
-//                             'ubuntu-16.04',
-                            'ubuntu-18.04'
+                            'ubuntu-16.04',
+//                             'ubuntu-18.04'
                             )
                     }
                 }
@@ -111,8 +111,8 @@ pipeline {
 //                             'centos-7',
 //                             'centos-8',
 //                             'fedora-31',
-//                             'ubuntu-16.04',
-                            'ubuntu-18.04'
+                            'ubuntu-16.04',
+//                             'ubuntu-18.04'
                             )
                     }
                 }
@@ -132,7 +132,7 @@ pipeline {
                                     unstash "${PLATFORM}-PACKAGE"
                                     sh "ls -la"
                                     sh "apt update && apt install -y libmediainfo-dev"
-                                    sh "dpkg -i dvrescue-0.1.1-Linux.deb"
+                                    sh "dpkg -i dvrescue-0.19.11-Linux.deb"
 //                                     sh "whoami"
                                 }
                             }

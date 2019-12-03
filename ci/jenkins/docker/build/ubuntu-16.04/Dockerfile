@@ -16,7 +16,8 @@ RUN apt-get install -y cmake \
     automake \
     pkg-config \
     libcurl4-gnutls-dev \
-    zlib1g-dev
+    zlib1g-dev \
+    ninja-build
 
 
 ARG USER_ID=1000
@@ -26,4 +27,5 @@ RUN groupadd -g $GROUP_ID user && \
     usermod -aG sudo user && \
     echo 'user ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
+ENV CMAKE_GENERATOR=Ninja
 ENV CPACK_GENERATOR=DEB
