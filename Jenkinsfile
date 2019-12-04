@@ -14,9 +14,9 @@ pipeline {
                     axis {
                         name 'PLATFORM'
                         values(
-                            'centos-7',
-                            'centos-8',
-                            'fedora-31',
+//                             'centos-7',
+//                             'centos-8',
+//                             'fedora-31',
                             'ubuntu-16.04',
                             'ubuntu-18.04'
                             )
@@ -47,9 +47,13 @@ pipeline {
                     }
                     stage('Build dvrescue') {
                         steps {
+                            sh "pkg-config --list-all"
+                            sh "pkg-config --libs-only-L libzen"
                             cmakeBuild(
                                 buildDir: 'build',
                                 installation: 'InSearchPath',
+                                cmakeArgs: "-DCMAKE_INSTALL_RPATH=/usr/local/lib",
+//                                 cmakeArgs: "-DCMAKE_INSTALL_RPATH=/usr/local/lib;/usr/lib",
                                 steps: [
                                     [withCmake: true]
                                 ]
@@ -61,7 +65,9 @@ pipeline {
                         steps{
                             dir("build"){
                             // This environment variable is set in the docker file
-                                sh 'cpack -G $CPACK_GENERATOR --verbose'
+                                sh 'cpack -G $CPACK_GENERATOR --verbose --debug'
+                                sh 'ls -R _CPack_Packages '
+                                sh "cat ${findFiles(glob: '**/control')[0]}"
                             }
                         }
                         post{
@@ -109,9 +115,9 @@ pipeline {
                     axis {
                         name 'PLATFORM'
                         values(
-                            'centos-7',
-                            'centos-8',
-                            'fedora-31',
+//                             'centos-7',
+//                             'centos-8',
+//                             'fedora-31',
                             'ubuntu-16.04',
                             'ubuntu-18.04'
                             )
