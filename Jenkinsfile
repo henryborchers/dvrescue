@@ -16,7 +16,7 @@ pipeline {
                         values(
                             'centos-7',
                             'centos-8',
-//                             'fedora-31',
+                            'fedora-31',
                             'ubuntu-16.04',
                             'ubuntu-18.04'
                             )
@@ -121,7 +121,7 @@ pipeline {
                         values(
                             'centos-7',
                             'centos-8',
-//                             'fedora-31',
+                            'fedora-31',
                             'ubuntu-16.04',
                             'ubuntu-18.04'
                             )
@@ -146,17 +146,16 @@ pipeline {
                                         sh "apt update && apt-get install -y -f ./${findFiles(glob: '*.deb')[0]}"
                                     }
 
+                                    if(PLATFORM.contains("fedora")){
+                                        sh "dnf -y localinstall ./${findFiles(glob: '*.rpm')[0]}"
+                                    }
                                     if(PLATFORM.contains("centos")){
-                                        sh "yum -y update && yum install -y which epel-release"
+                                        sh """yum -y update
+yum install -y epel-release
+yum -y localinstall ./${findFiles(glob: '*.rpm')[0]}"
+"""
                                     }
 
-                                    if(PLATFORM.contains("centos")){
-//                                         sh "yum -y install libzen"
-                                        sh "yum -y localinstall ./${findFiles(glob: '*.rpm')[0]}"
-//                                         sh "rpm -i ${findFiles(glob: '*.rpm')[0]}"
-                                    }
-
-                                    sh "which dvrescue"
                                     sh "dvrescue --version"
                                 }
                             }
