@@ -25,3 +25,4 @@ RUN groupadd -g $GROUP_ID user && \
     echo 'user ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
 ENV CPACK_GENERATOR=RPM
+ENV CMAKE_GENERATOR=Ninja
