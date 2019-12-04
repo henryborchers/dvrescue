@@ -141,13 +141,21 @@ pipeline {
                                 def test_machine = docker.image("${dockerImage}")
                                 test_machine.inside("--user root") {
                                     unstash "${PLATFORM}-PACKAGE"
+
                                     if(PLATFORM.contains("ubuntu")){
                                         sh "apt update && apt install -y libmediainfo-dev"
                                         sh "dpkg -i ${findFiles(glob: '*.deb')[0]}"
                                     }
+
                                     if(PLATFORM.contains("centos")){
-                                        sh "yum -y update && yum install -y which"
+                                        sh "yum -y update && yum install -y which epel-release"
                                     }
+
+                                    if(PLATFORM.contains("centos")){
+                                        sh "yum -y install libzen"
+                                        sh "rpm -i ${findFiles(glob: '*.rpm')[0]}"
+                                    }
+
                                     sh "which dvrescue"
                                     sh "dvrescue --version"
                                 }
