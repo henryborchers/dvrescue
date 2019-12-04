@@ -18,7 +18,7 @@ pipeline {
 //                             'centos-8',
 //                             'fedora-31',
                             'ubuntu-16.04',
-//                             'ubuntu-18.04'
+                            'ubuntu-18.04'
                             )
                     }
                 }
@@ -112,7 +112,7 @@ pipeline {
 //                             'centos-8',
 //                             'fedora-31',
                             'ubuntu-16.04',
-//                             'ubuntu-18.04'
+                            'ubuntu-18.04'
                             )
                     }
                 }
@@ -130,9 +130,10 @@ pipeline {
                                 def test_machine = docker.image("${dockerImage}")
                                 test_machine.inside("--user root") {
                                     unstash "${PLATFORM}-PACKAGE"
-                                    sh "ls -la"
-                                    sh "apt update && apt install -y libmediainfo-dev"
-                                    sh "dpkg -i dvrescue-0.19.11-Linux.deb"
+                                    if(PLATFORM.contains("ubuntu")){
+                                        sh "apt update && apt install -y libmediainfo-dev"
+                                        sh "dpkg -i ${findFiles(glob: '*.deb')[0]}"
+                                    }
                                     sh "which dvrescue"
                                     sh "dvrescue --version"
                                 }
