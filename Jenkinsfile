@@ -14,8 +14,8 @@ pipeline {
                     axis {
                         name 'PLATFORM'
                         values(
-//                             'centos-7',
-//                             'centos-8',
+                            'centos-7',
+                            'centos-8',
 //                             'fedora-31',
                             'ubuntu-16.04',
                             'ubuntu-18.04'
@@ -108,8 +108,8 @@ pipeline {
                     axis {
                         name 'PLATFORM'
                         values(
-//                             'centos-7',
-//                             'centos-8',
+                            'centos-7',
+                            'centos-8',
 //                             'fedora-31',
                             'ubuntu-16.04',
                             'ubuntu-18.04'
