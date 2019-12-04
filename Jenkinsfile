@@ -29,7 +29,7 @@ pipeline {
                                 git 'https://github.com/MediaArea/ZenLib.git'
                             }
                             dir("ZenLib/build"){
-                                sh "cmake ${WORKSPACE}/ZenLib/Project/CMake"
+                                sh "cmake ${WORKSPACE}/ZenLib/Project/CMake -G Ninja"
                                 sh "sudo cmake --build . --target install"
                             }
                         }
@@ -40,7 +40,7 @@ pipeline {
                                 git 'https://github.com/MediaArea/MediaInfoLib.git'
                             }
                             dir("MediaInfoLib/build"){
-                                sh "cmake ${WORKSPACE}/MediaInfoLib/Project/CMake"
+                                sh "cmake ${WORKSPACE}/MediaInfoLib/Project/CMake -G Ninja"
                                 sh "sudo cmake --build . --target install"
                             }
                         }
