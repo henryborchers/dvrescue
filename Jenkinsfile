@@ -70,6 +70,14 @@ pipeline {
                                     stash includes: '*.rpm,*.deb', name: "${PLATFORM}-PACKAGE"
                                 }
                             }
+                            cleanup{
+                                cleanWs(
+                                    patterns: [
+                                            [pattern: 'build/*.rpm', type: 'INCLUDE'],
+                                            [pattern: 'build/*.deb', type: 'INCLUDE']
+                                        ]
+                                    )
+                            }
                         }
                     }
                     stage('Install') {
