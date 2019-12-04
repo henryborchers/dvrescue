@@ -143,8 +143,9 @@ pipeline {
                                     unstash "${PLATFORM}-PACKAGE"
 
                                     if(PLATFORM.contains("ubuntu")){
-                                        sh "apt update && apt install -y libmediainfo-dev"
-                                        sh "dpkg -i ${findFiles(glob: '*.deb')[0]}"
+                                        sh "apt update && apt-get install -y -f ./${findFiles(glob: '*.deb')[0]}"
+//                                         sh "apt update && apt install -y libmediainfo-dev"
+//                                         sh "dpkg -i ${findFiles(glob: '*.deb')[0]}"
                                     }
 
                                     if(PLATFORM.contains("centos")){
