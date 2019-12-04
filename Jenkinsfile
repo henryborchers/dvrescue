@@ -134,6 +134,9 @@ pipeline {
                                         sh "apt update && apt install -y libmediainfo-dev"
                                         sh "dpkg -i ${findFiles(glob: '*.deb')[0]}"
                                     }
+                                    if(PLATFORM.contains("centos")){
+                                        sh "yum -y update && yum install -y which"
+                                    }
                                     sh "which dvrescue"
                                     sh "dvrescue --version"
                                 }
