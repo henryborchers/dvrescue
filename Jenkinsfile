@@ -144,8 +144,6 @@ pipeline {
 
                                     if(PLATFORM.contains("ubuntu")){
                                         sh "apt update && apt-get install -y -f ./${findFiles(glob: '*.deb')[0]}"
-//                                         sh "apt update && apt install -y libmediainfo-dev"
-//                                         sh "dpkg -i ${findFiles(glob: '*.deb')[0]}"
                                     }
 
                                     if(PLATFORM.contains("centos")){
@@ -153,8 +151,9 @@ pipeline {
                                     }
 
                                     if(PLATFORM.contains("centos")){
-                                        sh "yum -y install libzen"
-                                        sh "rpm -i ${findFiles(glob: '*.rpm')[0]}"
+//                                         sh "yum -y install libzen"
+                                        sh "yum -y localinstall ./${findFiles(glob: '*.rpm')[0]}"
+//                                         sh "rpm -i ${findFiles(glob: '*.rpm')[0]}"
                                     }
 
                                     sh "which dvrescue"
