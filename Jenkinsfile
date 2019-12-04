@@ -150,10 +150,9 @@ pipeline {
                                         sh "dnf -y localinstall ./${findFiles(glob: '*.rpm')[0]}"
                                     }
                                     if(PLATFORM.contains("centos")){
-                                        sh """yum -y update
-yum install -y epel-release
-yum -y localinstall ./${findFiles(glob: '*.rpm')[0]}"
-"""
+                                        sh "yum -y update"
+                                        sh "yum install -y epel-release"
+                                        sh "yum -y localinstall ./${findFiles(glob: '*.rpm')[0]}"
                                     }
 
                                     sh "dvrescue --version"
