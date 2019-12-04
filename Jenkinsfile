@@ -83,6 +83,9 @@ pipeline {
                             failure{
                                 sh "ldd /usr/local/bin/dvrescue"
                             }
+                            cleanup{
+                                sh "sudo rm -rf build"
+                            }
                         }
                     }
 
