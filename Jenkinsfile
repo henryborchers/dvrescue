@@ -49,6 +49,7 @@ pipeline {
                         steps {
                             sh "pkg-config --list-all"
                             sh "pkg-config --libs-only-L libzen"
+                            sh "which dpkg-shlibdeps"
                             cmakeBuild(
                                 buildDir: 'build',
                                 installation: 'InSearchPath',
@@ -65,7 +66,7 @@ pipeline {
                         steps{
                             dir("build"){
                             // This environment variable is set in the docker file
-                                sh 'cpack -G $CPACK_GENERATOR --verbose --debug'
+                                sh 'cpack -G $CPACK_GENERATOR --verbose --debug --trace'
                                 sh 'ls -R _CPack_Packages '
                                 sh "cat ${findFiles(glob: '**/control')[0]}"
                             }
