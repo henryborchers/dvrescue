@@ -45,7 +45,7 @@ pipeline {
                             }
                         }
                     }
-                    stage('Build') {
+                    stage('Build dvrescue') {
                         steps {
                             cmakeBuild(
                                 buildDir: 'build',
@@ -57,7 +57,7 @@ pipeline {
                             sh "build/Source/dvrescue --version"
                         }
                     }
-                    stage("Package"){
+                    stage("Package dvrescue"){
                         steps{
                             dir("build"){
                             // This environment variable is set in the docker file
@@ -88,9 +88,6 @@ pipeline {
                             sh "dvrescue --version"
                         }
                         post{
-                            failure{
-                                sh "ldd /usr/local/bin/dvrescue"
-                            }
                             cleanup{
                                 sh "sudo rm -rf build"
                             }
@@ -108,13 +105,6 @@ pipeline {
         stage("Testing Install Package"){
             matrix{
                 agent any
-//                 agent {
-//                     dockerfile {
-//                         filename "ci/jenkins/docker/build/${PLATFORM}/Dockerfile"
-//                         label 'linux && docker'
-//                         additionalBuildArgs '--build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g)'
-//                     }
-//                 }
                 axes {
                     axis {
                         name 'PLATFORM'
@@ -157,6 +147,11 @@ pipeline {
 
                                     sh "dvrescue --version"
                                 }
+                            }
+                        }
+                        post{
+                            cleanup{
+                                cleanWs()
                             }
                         }
                     }
