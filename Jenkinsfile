@@ -52,7 +52,7 @@ pipeline {
                                         if(PLATFORM.contains("ubuntu")){
                                             sh "cat ${findFiles(glob: '**/control')[0]}"
                                         }
-                                         if(PLATFORM.contains("centos") or PLATFORM.contains("fedora")){
+                                         if(PLATFORM.contains("centos") || PLATFORM.contains("fedora")){
                                             sh "cat ${findFiles(glob: '**/dvrescue.spec')[0]}"
                                         }
                                     }
