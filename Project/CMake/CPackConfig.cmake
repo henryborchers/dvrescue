@@ -1,8 +1,6 @@
 set(CPACK_PACKAGE_CONTACT "Jerome Martinez <Info@MediaArea.net>")
-#set(CPACK_DEBIAN_PACKAGE_DEPENDS "libzen-dev,libmediainfo-dev")
 set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
 set(CPACK_DEBIAN_PACKAGE_DEPENDS "libzen0v5")
-#set(CPACK_DEBIAN_PACKAGE_GENERATE_SHLIBS ON)
 
 set(CPACK_DEBIAN_PACKAGE_SECTION "utils")
 set(CPACK_PACKAGE_HOMEPAGE_URL "https://MediaArea.net/DVRescue")
