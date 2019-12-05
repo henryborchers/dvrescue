@@ -50,7 +50,7 @@ pipeline {
                             cmakeBuild(
                                 buildDir: 'build',
                                 installation: 'InSearchPath',
-                                cmakeArgs: "-DCMAKE_INSTALL_PREFIX:PATH=/usr/local -DCMAKE_INSTALL_RPATH=/usr/local/lib",
+//                                 cmakeArgs: "-DCMAKE_INSTALL_PREFIX:PATH=/usr/local -DCMAKE_INSTALL_RPATH=/usr/local/lib",
 //                                 cmakeArgs: "-DCMAKE_INSTALL_RPATH=/usr/local/lib;/usr/lib",
                                 steps: [
                                     [withCmake: true]
