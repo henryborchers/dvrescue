@@ -1,7 +1,7 @@
 set(CPACK_PACKAGE_CONTACT "Jerome Martinez <Info@MediaArea.net>")
 set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
 set(CPACK_DEBIAN_PACKAGE_DEPENDS "libzen0v5")
-
+set(CPACK_DEBIAN_PACKAGE_DESCRIPTION "Supplies technical and tag information about a video or audio file")
 set(CPACK_DEBIAN_PACKAGE_SECTION "utils")
 set(CPACK_PACKAGE_HOMEPAGE_URL "https://MediaArea.net/DVRescue")
 set(CPACK_RESOURCE_FILE_LICENSE "${PROJECT_SOURCE_DIR}/LICENSE")
