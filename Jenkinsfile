@@ -49,7 +49,6 @@ pipeline {
                         steps {
                             sh "pkg-config --list-all"
                             sh "pkg-config --libs-only-L libzen"
-                            sh "which dpkg-shlibdeps"
                             cmakeBuild(
                                 buildDir: 'build',
                                 installation: 'InSearchPath',
