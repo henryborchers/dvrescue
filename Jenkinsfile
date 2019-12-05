@@ -47,13 +47,10 @@ pipeline {
 //                     }
                     stage('Build dvrescue') {
                         steps {
-                            sh "pkg-config --list-all"
-                            sh "pkg-config --libs-only-L libzen"
                             cmakeBuild(
                                 buildDir: 'build',
                                 installation: 'InSearchPath',
-                                cmakeArgs: "-DCMAKE_INSTALL_PREFIX:PATH=/usr/local",
-//                                 cmakeArgs: "-DCMAKE_INSTALL_RPATH=/usr/local/lib",
+                                cmakeArgs: "-DCMAKE_INSTALL_PREFIX:PATH=/usr/local -DCMAKE_INSTALL_RPATH=/usr/local/lib",
 //                                 cmakeArgs: "-DCMAKE_INSTALL_RPATH=/usr/local/lib;/usr/lib",
                                 steps: [
                                     [withCmake: true]
