@@ -23,35 +23,11 @@ pipeline {
                     }
                 }
                 stages {
-//                     stage("Install ZenLib"){
-//                         steps{
-//                             dir("ZenLib"){
-//                                 git 'https://github.com/MediaArea/ZenLib.git'
-//                             }
-//                             dir("ZenLib/build"){
-//                                 sh "cmake ${WORKSPACE}/ZenLib/Project/CMake -G Ninja"
-//                                 sh "sudo cmake --build . --target install"
-//                             }
-//                         }
-//                     }
-//                     stage("Install MediaInfoLib"){
-//                         steps{
-//                             dir("MediaInfoLib"){
-//                                 git 'https://github.com/MediaArea/MediaInfoLib.git'
-//                             }
-//                             dir("MediaInfoLib/build"){
-//                                 sh "cmake ${WORKSPACE}/MediaInfoLib/Project/CMake -G Ninja"
-//                                 sh "sudo cmake --build . --target install"
-//                             }
-//                         }
-//                     }
                     stage('Build dvrescue') {
                         steps {
                             cmakeBuild(
                                 buildDir: 'build',
                                 installation: 'InSearchPath',
-//                                 cmakeArgs: "-DCMAKE_INSTALL_PREFIX:PATH=/usr/local -DCMAKE_INSTALL_RPATH=/usr/local/lib",
-//                                 cmakeArgs: "-DCMAKE_INSTALL_RPATH=/usr/local/lib;/usr/lib",
                                 steps: [
                                     [withCmake: true]
                                 ]
@@ -63,7 +39,7 @@ pipeline {
                         steps{
                             dir("build"){
                             // This environment variable is set in the docker file
-                                sh 'cpack -G $CPACK_GENERATOR --verbose --debug  --trace-expand'
+                                sh 'cpack -G $CPACK_GENERATOR --verbose --debug'
 
 
                             }
@@ -72,10 +48,12 @@ pipeline {
                             success{
                                 dir("build"){
                                     stash includes: '*.rpm,*.deb', name: "${PLATFORM}-PACKAGE"
-                                    sh 'ls -R _CPack_Packages '
                                     script{
                                         if(PLATFORM.contains("ubuntu")){
                                             sh "cat ${findFiles(glob: '**/control')[0]}"
+                                        }
+                                         if(PLATFORM.contains("centos")){
+                                            sh "cat ${findFiles(glob: '**/dvrescue.spec')[0]}"
                                         }
                                     }
                                 }
