@@ -14,37 +14,37 @@ pipeline {
                     axis {
                         name 'PLATFORM'
                         values(
-//                             'centos-7',
-//                             'centos-8',
-//                             'fedora-31',
+                            'centos-7',
+                            'centos-8',
+                            'fedora-31',
                             'ubuntu-16.04',
                             'ubuntu-18.04'
                             )
                     }
                 }
                 stages {
-                    stage("Install ZenLib"){
-                        steps{
-                            dir("ZenLib"){
-                                git 'https://github.com/MediaArea/ZenLib.git'
-                            }
-                            dir("ZenLib/build"){
-                                sh "cmake ${WORKSPACE}/ZenLib/Project/CMake -G Ninja"
-                                sh "sudo cmake --build . --target install"
-                            }
-                        }
-                    }
-                    stage("Install MediaInfoLib"){
-                        steps{
-                            dir("MediaInfoLib"){
-                                git 'https://github.com/MediaArea/MediaInfoLib.git'
-                            }
-                            dir("MediaInfoLib/build"){
-                                sh "cmake ${WORKSPACE}/MediaInfoLib/Project/CMake -G Ninja"
-                                sh "sudo cmake --build . --target install"
-                            }
-                        }
-                    }
+//                     stage("Install ZenLib"){
+//                         steps{
+//                             dir("ZenLib"){
+//                                 git 'https://github.com/MediaArea/ZenLib.git'
+//                             }
+//                             dir("ZenLib/build"){
+//                                 sh "cmake ${WORKSPACE}/ZenLib/Project/CMake -G Ninja"
+//                                 sh "sudo cmake --build . --target install"
+//                             }
+//                         }
+//                     }
+//                     stage("Install MediaInfoLib"){
+//                         steps{
+//                             dir("MediaInfoLib"){
+//                                 git 'https://github.com/MediaArea/MediaInfoLib.git'
+//                             }
+//                             dir("MediaInfoLib/build"){
+//                                 sh "cmake ${WORKSPACE}/MediaInfoLib/Project/CMake -G Ninja"
+//                                 sh "sudo cmake --build . --target install"
+//                             }
+//                         }
+//                     }
                     stage('Build dvrescue') {
                         steps {
                             sh "pkg-config --list-all"
