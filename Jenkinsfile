@@ -63,7 +63,7 @@ pipeline {
                         steps{
                             dir("build"){
                             // This environment variable is set in the docker file
-                                sh 'cpack -G $CPACK_GENERATOR --verbose --debug --trace'
+                                sh 'cpack -G $CPACK_GENERATOR --verbose --debug  --trace-expand'
 
 
                             }
