@@ -67,7 +67,12 @@ pipeline {
                             // This environment variable is set in the docker file
                                 sh 'cpack -G $CPACK_GENERATOR --verbose --debug --trace'
                                 sh 'ls -R _CPack_Packages '
-                                sh "cat ${findFiles(glob: '**/control')[0]}"
+                                script{
+                                    if(PLATFORM.contains("ubuntu")){
+                                        sh "cat ${findFiles(glob: '**/control')[0]}"
+                                    }
+                                }
+
                             }
                         }
                         post{
