@@ -23,7 +23,7 @@ RUN groupadd -g $GROUP_ID user && \
     echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 ENV CMAKE_GENERATOR=Ninja
 ENV CPACK_GENERATOR=DEB
-
+ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
 RUN git clone https://github.com/MediaArea/ZenLib.git /deps/ZenLib/source && \
     mkdir /deps/ZenLib/build && \
     cd /deps/ZenLib/build && \
