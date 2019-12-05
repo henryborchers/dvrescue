@@ -7,7 +7,7 @@ project(dvrescue
         LANGUAGES CXX
         )
 set(DVRESCUE_VERSION_MAJOR "0")
-set(DVRESCUE_VERSION_MINOR "19")
+set(DVRESCUE_VERSION_MINOR "29")
 set(DVRESCUE_VERSION_PATCH "11")
 find_package(ZenLib REQUIRED)
 find_package(MediaInfoLib REQUIRED)
