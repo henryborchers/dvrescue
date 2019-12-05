@@ -5,6 +5,7 @@ set(CPACK_DEBIAN_PACKAGE_DESCRIPTION "Supplies technical and tag information abo
 set(CPACK_DEBIAN_PACKAGE_SECTION "utils")
 set(CPACK_RPM_PACKAGE_LICENSE "BSD-3-Clause")
 set(CPACK_RPM_PACKAGE_GROUP "Productivity/Multimedia/Other")
+set(CPACK_RPM_PACKAGE_DESCRIPTION "Data migration from DV tapes into digital files suitable for long-term preservation")
 set(CPACK_PACKAGE_HOMEPAGE_URL "https://MediaArea.net/DVRescue")
 set(CPACK_RESOURCE_FILE_LICENSE "${PROJECT_SOURCE_DIR}/LICENSE")
 set(CPACK_RESOURCE_FILE_README "${PROJECT_SOURCE_DIR}/README.md")
