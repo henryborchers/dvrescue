@@ -64,12 +64,7 @@ pipeline {
                             dir("build"){
                             // This environment variable is set in the docker file
                                 sh 'cpack -G $CPACK_GENERATOR --verbose --debug --trace'
-                                sh 'ls -R _CPack_Packages '
-                                script{
-                                    if(PLATFORM.contains("ubuntu")){
-                                        sh "cat ${findFiles(glob: '**/control')[0]}"
-                                    }
-                                }
+
 
                             }
                         }
@@ -77,7 +72,14 @@ pipeline {
                             success{
                                 dir("build"){
                                     stash includes: '*.rpm,*.deb', name: "${PLATFORM}-PACKAGE"
+                                    sh 'ls -R _CPack_Packages '
+                                    script{
+                                        if(PLATFORM.contains("ubuntu")){
+                                            sh "cat ${findFiles(glob: '**/control')[0]}"
+                                        }
+                                    }
                                 }
+
                             }
                             cleanup{
                                 cleanWs(
