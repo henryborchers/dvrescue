@@ -33,14 +33,14 @@ RUN groupadd -g $GROUP_ID user && \
 
 ENV CPACK_GENERATOR=RPM
 ENV CMAKE_GENERATOR=Ninja
-
-RUN git clone https://github.com/MediaArea/ZenLib.git /deps/ZenLib/source && \
+ENV PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig
+RUN mkdir -p /deps/ZenLib && \
+    git clone https://github.com/MediaArea/ZenLib.git /deps/ZenLib/source && \
     mkdir /deps/ZenLib/build && \
     cd /deps/ZenLib/build && \
-    cmake -S /deps/ZenLib/source/Project/CMake -G Ninja && \
+    cmake -S /deps/ZenLib/source/Project/CMake &&\
     cmake --build . --target install && \
     rm -rf /deps/ZenLib
-
 
 RUN git clone https://github.com/MediaArea/MediaInfoLib.git /deps/MediaInfoLib/source && \
     mkdir /deps/MediaInfoLib/build && \

@@ -22,6 +22,7 @@ RUN groupadd -g $GROUP_ID user && \
 
 ENV CPACK_GENERATOR=RPM
 ENV CMAKE_GENERATOR=Ninja
+ENV PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig
 
 RUN git clone https://github.com/MediaArea/ZenLib.git /deps/ZenLib/source && \
     mkdir /deps/ZenLib/build && \
