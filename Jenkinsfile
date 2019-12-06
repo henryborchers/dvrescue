@@ -1,7 +1,9 @@
 def load_configurations(){
     node{
         checkout scm
-        return readYaml(file: "ci/jenkins/configurations.yml")
+        def config = readYaml(file: "ci/jenkins/configurations.yml")
+        echo "config = ${config}"
+        return config
     }
 }
 def CONFIGURATIONS = load_configurations()
@@ -32,9 +34,9 @@ pipeline {
                 stages {
                     stage('Build dvrescue') {
                         steps {
-                            script{
-                                echo "CONFIGURATIONS = ${CONFIGURATIONS[PLATFORM]}"
-                            }
+//                             script{
+//                                 echo "CONFIGURATIONS = ${CONFIGURATIONS[PLATFORM]}"
+//                             }
                             cmakeBuild(
                                 buildDir: 'build',
                                 installation: 'InSearchPath',
