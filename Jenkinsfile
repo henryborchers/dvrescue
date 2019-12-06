@@ -11,6 +11,9 @@ def load_configurations(){
                         dockerfile:"ci/jenkins/docker/build/centos-7/Dockerfile",
                         label: "linux && docker",
                         additionalBuildArgs: '--build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g)'
+                    ],
+                    test:[
+                        dockerImage: "centos:7"
                     ]
                 ]
             ],
@@ -23,6 +26,9 @@ def load_configurations(){
                         dockerfile: "ci/jenkins/docker/build/centos-8/Dockerfile",
                         label: "linux && docker",
                         additionalBuildArgs: '--build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g)'
+                    ],
+                    test:[
+                        dockerImage: "centos:8"
                     ]
                 ]
             ],
@@ -35,6 +41,9 @@ def load_configurations(){
                         dockerfile:"ci/jenkins/docker/build/fedora-31/Dockerfile",
                         label: "linux && docker",
                         additionalBuildArgs: '--build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g)'
+                    ],
+                    test:[
+                        dockerImage: "fedora:31"
                     ]
                 ]
             ],
@@ -47,6 +56,9 @@ def load_configurations(){
                         dockerfile:"ci/jenkins/docker/build/ubuntu-16.04/Dockerfile",
                         label: "linux && docker",
                         additionalBuildArgs: '--build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g)'
+                    ],
+                    test:[
+                        dockerImage: "ubuntu:16.04"
                     ]
                 ]
             ],
@@ -59,6 +71,9 @@ def load_configurations(){
                         dockerfile:"ci/jenkins/docker/build/ubuntu-18.04/Dockerfile",
                         label: "linux && docker",
                         additionalBuildArgs: '--build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g)'
+                    ],
+                    test:[
+                        dockerImage: "ubuntu:18.04"
                     ]
                 ]
             ]
@@ -74,14 +89,6 @@ pipeline {
     stages {
         stage('Build') {
             matrix {
-                agent {
-                    dockerfile {
-                        filename CONFIGURATIONS[PLATFORM].agents.build.dockerfile
-                        label CONFIGURATIONS[PLATFORM].agents.build.label
-                        additionalBuildArgs "${CONFIGURATIONS[PLATFORM].agents.build.additionalBuildArgs}"
-//                         additionalBuildArgs '--build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g)'
-                    }
-                }
                 axes {
                     axis {
                         name 'PLATFORM'
@@ -92,6 +99,13 @@ pipeline {
                             'ubuntu-16.04',
                             'ubuntu-18.04'
                             )
+                    }
+                }
+                agent {
+                    dockerfile {
+                        filename CONFIGURATIONS[PLATFORM].agents.build.dockerfile
+                        label CONFIGURATIONS[PLATFORM].agents.build.label
+                        additionalBuildArgs "${CONFIGURATIONS[PLATFORM].agents.build.additionalBuildArgs}"
                     }
                 }
                 stages {
@@ -191,10 +205,7 @@ pipeline {
                         steps{
                             echo "Testing installing on ${PLATFORM}"
                             script{
-                                def parts = "${PLATFORM}".split('-')
-                                def dockerImage = "${parts[0]}:${parts[1]}"
-                                echo "Creating a new container based on ${dockerImage}"
-                                def test_machine = docker.image("${dockerImage}")
+                                def test_machine = docker.image(CONFIGURATIONS[PLATFORM].agents.test.dockerImage)
                                 test_machine.inside("--user root") {
                                     unstash "${PLATFORM}-PACKAGE"
 
