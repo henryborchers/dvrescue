@@ -4,7 +4,7 @@ def load_configurations(){
         return readYaml(file: "ci/jenkins/configurations.yml")
     }
 }
-def data = load_configurations()
+def CONFIGURATIONS = load_configurations()
 pipeline {
     agent none
     stages {
@@ -32,6 +32,9 @@ pipeline {
                 stages {
                     stage('Build dvrescue') {
                         steps {
+                            script{
+                                echo "CONFIGURATIONS = ${CONFIGURATIONS[PLATFORM]}"
+                            }
                             cmakeBuild(
                                 buildDir: 'build',
                                 installation: 'InSearchPath',
