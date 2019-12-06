@@ -9,7 +9,8 @@ def load_configurations(){
                 agents:[
                     build:[
                         dockerfile:"ci/jenkins/docker/build/centos-7/Dockerfile",
-                        label: "linux && docker"
+                        label: "linux && docker",
+                        additionalBuildArgs: '--build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g)'
                     ]
                 ]
             ],
@@ -20,7 +21,8 @@ def load_configurations(){
                 agents:[
                     build:[
                         dockerfile: "ci/jenkins/docker/build/centos-8/Dockerfile",
-                        label: "linux && docker"
+                        label: "linux && docker",
+                        additionalBuildArgs: '--build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g)'
                     ]
                 ]
             ],
@@ -31,7 +33,8 @@ def load_configurations(){
                 agents:[
                     build:[
                         dockerfile:"ci/jenkins/docker/build/fedora-31/Dockerfile",
-                        label: "linux && docker"
+                        label: "linux && docker",
+                        additionalBuildArgs: '--build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g)'
                     ]
                 ]
             ],
@@ -42,7 +45,8 @@ def load_configurations(){
                 agents:[
                     build:[
                         dockerfile:"ci/jenkins/docker/build/ubuntu-16.04/Dockerfile",
-                        label: "linux && docker"
+                        label: "linux && docker",
+                        additionalBuildArgs: '--build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g)'
                     ]
                 ]
             ],
@@ -53,7 +57,8 @@ def load_configurations(){
                 agents:[
                     build:[
                         dockerfile:"ci/jenkins/docker/build/ubuntu-18.04/Dockerfile",
-                        label: "linux && docker"
+                        label: "linux && docker",
+                        additionalBuildArgs: '--build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g)'
                     ]
                 ]
             ]
@@ -72,9 +77,9 @@ pipeline {
                 agent {
                     dockerfile {
                         filename CONFIGURATIONS[PLATFORM].agents.build.dockerfile
-//                         filename "ci/jenkins/docker/build/${PLATFORM}/Dockerfile"
                         label CONFIGURATIONS[PLATFORM].agents.build.label
-                        additionalBuildArgs '--build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g)'
+                        additionalBuildArgs "${CONFIGURATIONS[PLATFORM].agents.build.additionalBuildArgs}"
+//                         additionalBuildArgs '--build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g)'
                     }
                 }
                 axes {
