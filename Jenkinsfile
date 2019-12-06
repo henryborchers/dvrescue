@@ -93,7 +93,9 @@ pipeline {
         }
         stage("Testing Install Package"){
             matrix{
-                agent any
+                agent {
+                    label 'linux && docker'
+                }
                 axes {
                     axis {
                         name 'PLATFORM'
