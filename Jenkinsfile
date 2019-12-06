@@ -1,3 +1,10 @@
+def load_configurations(){
+    node{
+        checkout scm
+        return readYaml(file: "ci/jenkins/configurations.yml")
+    }
+}
+def data = load_configurations()
 pipeline {
     agent none
     stages {
