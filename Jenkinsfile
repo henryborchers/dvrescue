@@ -1,3 +1,10 @@
+def load_configurations(){
+    node{
+        checkout scm
+        return readYaml(file: "ci/jenkins/configurations.yml")
+    }
+}
+def data = load_configurations()
 pipeline {
     agent none
     stages {
@@ -93,7 +100,9 @@ pipeline {
         }
         stage("Testing Install Package"){
             matrix{
-                agent any
+                agent {
+                    label 'linux && docker'
+                }
                 axes {
                     axis {
                         name 'PLATFORM'
