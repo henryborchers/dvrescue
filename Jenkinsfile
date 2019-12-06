@@ -10,7 +10,8 @@ def load_configurations(){
                     build:[
                         dockerfile:"ci/jenkins/docker/build/centos-7/Dockerfile",
                         label: "linux && docker",
-                        additionalBuildArgs: '--build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g)'
+                        additionalBuildArgs: '--build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g)',
+                        cpack_generator: "RPM"
                     ],
                     test:[
                         dockerImage: "centos:7"
@@ -25,7 +26,8 @@ def load_configurations(){
                     build:[
                         dockerfile: "ci/jenkins/docker/build/centos-8/Dockerfile",
                         label: "linux && docker",
-                        additionalBuildArgs: '--build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g)'
+                        additionalBuildArgs: '--build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g)',
+                        cpack_generator: "RPM"
                     ],
                     test:[
                         dockerImage: "centos:8"
@@ -40,7 +42,8 @@ def load_configurations(){
                     build:[
                         dockerfile:"ci/jenkins/docker/build/fedora-31/Dockerfile",
                         label: "linux && docker",
-                        additionalBuildArgs: '--build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g)'
+                        additionalBuildArgs: '--build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g)',
+                        cpack_generator: "RPM"
                     ],
                     test:[
                         dockerImage: "fedora:31"
@@ -55,7 +58,8 @@ def load_configurations(){
                     build:[
                         dockerfile:"ci/jenkins/docker/build/ubuntu-16.04/Dockerfile",
                         label: "linux && docker",
-                        additionalBuildArgs: '--build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g)'
+                        additionalBuildArgs: '--build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g)',
+                        cpack_generator: "DEB"
                     ],
                     test:[
                         dockerImage: "ubuntu:16.04"
@@ -70,7 +74,8 @@ def load_configurations(){
                     build:[
                         dockerfile:"ci/jenkins/docker/build/ubuntu-18.04/Dockerfile",
                         label: "linux && docker",
-                        additionalBuildArgs: '--build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g)'
+                        additionalBuildArgs: '--build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g)',
+                        cpack_generator: "DEB"
                     ],
                     test:[
                         dockerImage: "ubuntu:18.04"
@@ -111,9 +116,6 @@ pipeline {
                 stages {
                     stage('Build dvrescue') {
                         steps {
-//                             script{
-                            echo "CONFIGURATIONS = ${CONFIGURATIONS[PLATFORM]}"
-//                             }
                             cmakeBuild(
                                 buildDir: 'build',
                                 installation: 'InSearchPath',
@@ -127,10 +129,7 @@ pipeline {
                     stage("Package dvrescue"){
                         steps{
                             dir("build"){
-                            // This environment variable is set in the docker file
-                                sh 'cpack -G $CPACK_GENERATOR --verbose --debug'
-
-
+                                sh "cpack -G ${CONFIGURATIONS[PLATFORM].agents.build.cpack_generator} --verbose --debug"
                             }
                         }
                         post{
