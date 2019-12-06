@@ -16,7 +16,7 @@ def load_configurations(){
                 version:"8",
                 agents:[
                     build:[
-                        dockerfile:" ci/jenkins/docker/build/centos-8/Dockerfile"
+                        dockerfile: "ci/jenkins/docker/build/centos-8/Dockerfile"
                     ]
                 ]
             ],
@@ -61,7 +61,8 @@ pipeline {
             matrix {
                 agent {
                     dockerfile {
-                        filename "ci/jenkins/docker/build/${PLATFORM}/Dockerfile"
+                        filename CONFIGURATIONS[PLATFORM].agents.build.dockerfile
+//                         filename "ci/jenkins/docker/build/${PLATFORM}/Dockerfile"
                         label 'linux && docker'
                         additionalBuildArgs '--build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g)'
                     }
