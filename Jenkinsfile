@@ -4,46 +4,56 @@ def load_configurations(){
         def config = [
             "centos-7": [
                 os:"centos",
+                os_family: "linux",
                 version:"7",
                 agents:[
                     build:[
-                        dockerfile:"ci/jenkins/docker/build/centos-7/Dockerfile"
+                        dockerfile:"ci/jenkins/docker/build/centos-7/Dockerfile",
+                        label: "linux && docker"
                     ]
                 ]
             ],
             "centos-8": [
                 os: "centos",
+                os_family: "linux",
                 version:"8",
                 agents:[
                     build:[
-                        dockerfile: "ci/jenkins/docker/build/centos-8/Dockerfile"
+                        dockerfile: "ci/jenkins/docker/build/centos-8/Dockerfile",
+                        label: "linux && docker"
                     ]
                 ]
             ],
             "fedora-31": [
                 os: "fedora",
+                os_family: "linux",
                 version: "31",
                 agents:[
                     build:[
-                        dockerfile:"ci/jenkins/docker/build/fedora-31/Dockerfile"
+                        dockerfile:"ci/jenkins/docker/build/fedora-31/Dockerfile",
+                        label: "linux && docker"
                     ]
                 ]
             ],
             "ubuntu-16.04":[
                 os:"ubuntu",
+                os_family: "linux",
                 version:"16.04",
                 agents:[
                     build:[
-                        dockerfile:"ci/jenkins/docker/build/ubuntu-16.04/Dockerfile"
+                        dockerfile:"ci/jenkins/docker/build/ubuntu-16.04/Dockerfile",
+                        label: "linux && docker"
                     ]
                 ]
             ],
             "ubuntu-18.04":[
                 os:"ubuntu",
+                os_family: "linux",
                 version:"18.04",
                 agents:[
                     build:[
-                        dockerfile:"ci/jenkins/docker/build/ubuntu-18.04/Dockerfile"
+                        dockerfile:"ci/jenkins/docker/build/ubuntu-18.04/Dockerfile",
+                        label: "linux && docker"
                     ]
                 ]
             ]
@@ -63,7 +73,7 @@ pipeline {
                     dockerfile {
                         filename CONFIGURATIONS[PLATFORM].agents.build.dockerfile
 //                         filename "ci/jenkins/docker/build/${PLATFORM}/Dockerfile"
-                        label 'linux && docker'
+                        label CONFIGURATIONS[PLATFORM].agents.build.label
                         additionalBuildArgs '--build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g)'
                     }
                 }
