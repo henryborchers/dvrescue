@@ -1,8 +1,55 @@
 def load_configurations(){
     node{
         checkout scm
-        def config = readYaml(file: "ci/jenkins/configurations.yml")
-        echo "config = ${config}"
+        def config = [
+            "centos-7": [
+                os:"centos",
+                version:"7",
+                agents:[
+                    build:[
+                        dockerfile:"ci/jenkins/docker/build/centos-7/Dockerfile"
+                    ]
+                ]
+            ],
+            "centos-8": [
+                os: "centos",
+                version:"8",
+                agents:[
+                    build:[
+                        dockerfile:" ci/jenkins/docker/build/centos-8/Dockerfile"
+                    ]
+                ]
+            ],
+            "fedora-31": [
+                os: "fedora",
+                version: "31",
+                agents:[
+                    build:[
+                        dockerfile:"ci/jenkins/docker/build/fedora-31/Dockerfile"
+                    ]
+                ]
+            ],
+            "ubuntu-16.04":[
+                os:"ubuntu",
+                version:"16.04",
+                agents:[
+                    build:[
+                        dockerfile:"ci/jenkins/docker/build/ubuntu-16.04/Dockerfile"
+                    ]
+                ]
+            ],
+            "ubuntu-18.04":[
+                os:"ubuntu",
+                version:"18.04",
+                agents:[
+                    build:[
+                        dockerfile:"ci/jenkins/docker/build/ubuntu-18.04/Dockerfile"
+                    ]
+                ]
+            ]
+        ]
+//         def config = readYaml(file: "ci/jenkins/configurations.yml")
+//         echo "config = ${config}"
         return config
     }
 }
@@ -35,7 +82,7 @@ pipeline {
                     stage('Build dvrescue') {
                         steps {
 //                             script{
-//                                 echo "CONFIGURATIONS = ${CONFIGURATIONS[PLATFORM]}"
+                            echo "CONFIGURATIONS = ${CONFIGURATIONS[PLATFORM]}"
 //                             }
                             cmakeBuild(
                                 buildDir: 'build',
