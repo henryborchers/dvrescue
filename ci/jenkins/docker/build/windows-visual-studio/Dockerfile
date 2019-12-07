@@ -61,3 +61,9 @@ RUN git clone https://github.com/MediaArea/ZenLib.git c:/deps/ZenLib/source && `
     cd c:/deps/ZenLib/build && `
     cmake -S c:/deps/ZenLib/source/Project/CMake -G Ninja && `
     cmake --build . --target install
+
+RUN git clone https://github.com/MediaArea/MediaInfoLib.git c:/deps/MediaInfoLib/source && `
+    mkdir c:\\deps\\MediaInfoLib\\build && `
+    cd c:/deps/MediaInfoLib/build && `
+    cmake -S c:/deps/MediaInfoLib/source/Project/CMake -G Ninja && `
+    cmake --build . --target install
