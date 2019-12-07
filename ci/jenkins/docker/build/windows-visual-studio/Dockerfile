@@ -55,3 +55,9 @@ RUN $ErrorActionPreference = 'Stop'; `
 SHELL ["cmd", "/S", "/C"]
 ADD ci/jenkins/docker/build/windows-visual-studio/starup.bat c:\temp\startup.bat
 RUN REG ADD "HKLM\Software\Microsoft\Command Processor" /v AutoRun /t REG_SZ /d c:\temp\startup.bat
+
+RUN git clone https://github.com/MediaArea/ZenLib.git c:/deps/ZenLib/source && `
+    mkdir c:\\deps\\ZenLib\\build && `
+    cd c:/deps/ZenLib/build && `
+    cmake -S c:/deps/ZenLib/source/Project/CMake -G Ninja && `
+    cmake --build . --target install
