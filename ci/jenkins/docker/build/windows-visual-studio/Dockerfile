@@ -54,8 +54,7 @@ RUN $ErrorActionPreference = 'Stop'; `
 RUN $ErrorActionPreference = 'Stop'; `
     mkdir deps ; `
     Invoke-WebRequest 'https://www.zlib.net/zlib1211.zip' -OutFile c:/deps/zlib.zip ; `
-    Expand-Archive c:\deps\zlib.zip -DestinationPath c:\deps\zlib\source ;
-    dir c:\deps\zlib\source
+    Expand-Archive c:\deps\zlib.zip -DestinationPath c:\deps\zlib\source
 
 # Reset the shell.
 SHELL ["cmd", "/S", "/C"]
@@ -65,17 +64,17 @@ RUN REG ADD "HKLM\Software\Microsoft\Command Processor" /v AutoRun /t REG_SZ /d 
 # TODO. unzip zlib and compile and install it
 RUN mkdir c:\\deps\\zlib\\build && `
     cd c:\deps\zlib\source && `
-    cmake -S c:/deps/zlib/source -G Ninja && `
+    cmake -S c:/deps/zlib/source/zlib-1.2.11 -G Ninja -DCMAKE_INSTALL_PREFIX:PATH=C:/deps && `
     cmake --build . --target install
 
 RUN git clone https://github.com/MediaArea/ZenLib.git c:/deps/ZenLib/source && `
     mkdir c:\\deps\\ZenLib\\build && `
     cd c:/deps/ZenLib/build && `
-    cmake -S c:/deps/ZenLib/source/Project/CMake -G Ninja && `
+    cmake -S c:/deps/ZenLib/source/Project/CMake -G Ninja -DCMAKE_INSTALL_PREFIX:PATH=C:/deps && `
     cmake --build . --target install
 
 RUN git clone https://github.com/MediaArea/MediaInfoLib.git c:/deps/MediaInfoLib/source && `
     mkdir c:\\deps\\MediaInfoLib\\build && `
     cd c:/deps/MediaInfoLib/build && `
-    cmake -S c:/deps/MediaInfoLib/source/Project/CMake -G Ninja && `
+    cmake -S c:/deps/MediaInfoLib/source/Project/CMake -G Ninja -DCMAKE_INSTALL_PREFIX:PATH=C:/deps && `
     cmake --build . --target install
