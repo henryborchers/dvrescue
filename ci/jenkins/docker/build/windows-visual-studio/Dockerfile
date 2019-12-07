@@ -76,5 +76,5 @@ RUN git clone https://github.com/MediaArea/ZenLib.git c:/deps/ZenLib/source && `
 RUN git clone https://github.com/MediaArea/MediaInfoLib.git c:/deps/MediaInfoLib/source && `
     mkdir c:\\deps\\MediaInfoLib\\build && `
     cd c:/deps/MediaInfoLib/build && `
-    cmake -S c:/deps/MediaInfoLib/source/Project/CMake -G Ninja -DCMAKE_INSTALL_PREFIX:PATH=C:/deps && `
+    cmake -S c:/deps/MediaInfoLib/source/Project/CMake -G Ninja -DCMAKE_INSTALL_PREFIX:PATH=C:/deps -DBUILD_ZLIB:BOOL=no && `
     cmake --build . --target install
