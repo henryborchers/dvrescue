@@ -44,9 +44,11 @@ pipeline {
                     }
                     stage("Package dvrescue"){
                         steps{
-                            dir("build"){
-                                sh "cpack -G ${CONFIGURATIONS[PLATFORM].agents.build.cpack_generator} --verbose --debug"
-                            }
+                            cpack(
+                                arguments: "-G ${CONFIGURATIONS[PLATFORM].agents.build.cpack_generator}",
+                                installation: 'InSearchPath',
+                                workingDir: 'build'
+                                )
                         }
                         post{
                             success{
