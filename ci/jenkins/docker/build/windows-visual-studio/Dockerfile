@@ -44,5 +44,14 @@ RUN choco install -y nsis wixtoolset ninja`
     && choco install -y cmake --installargs 'ADD_CMAKE_TO_PATH=System' `
     && del /S /F /Q %ChocolateyInstall%"
 
+SHELL ["powershell", "-command"]
+RUN $ErrorActionPreference = 'Stop'; `
+    Invoke-WebRequest 'https://github.com/git-for-windows/git/releases/download/v2.12.2.windows.2/MinGit-2.12.2.2-64-bit.zip' -OutFile MinGit.zip ; `
+    Expand-Archive c:\MinGit.zip -DestinationPath c:\MinGit; `
+    $env:PATH = $env:PATH + ';C:\MinGit\cmd\;C:\MinGit\cmd'; `
+    Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment\' -Name Path -Value $env:PATH
+
+# Reset the shell.
+SHELL ["cmd", "/S", "/C"]
 ADD ci/jenkins/docker/build/windows-visual-studio/starup.bat c:\temp\startup.bat
 RUN REG ADD "HKLM\Software\Microsoft\Command Processor" /v AutoRun /t REG_SZ /d c:\temp\startup.bat

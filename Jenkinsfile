@@ -14,11 +14,11 @@ pipeline {
                     axis {
                         name 'PLATFORM'
                         values(
-//                            'centos-7',
-//                            'centos-8',
-//                            'fedora-31',
-//                            'ubuntu-16.04',
-//                            'ubuntu-18.04',
+                            'centos-7',
+                            'centos-8',
+                            'fedora-31',
+                            'ubuntu-16.04',
+                            'ubuntu-18.04',
                             "visual-studio"
                             )
                     }
@@ -33,14 +33,8 @@ pipeline {
                 stages {
                     stage('Build dvrescue') {
                         steps {
-                            script{
-                                if(!isUnix()){
-                                    bat "where cmake"
-                                    bat "\"C:\\Program Files\\CMake\\bin\\cmake.exe\" --version"
-                                }
-                            }
                             cmakeBuild(
-                                buildDir: 'build',
+                                buildDir: CONFIGURATIONS[PLATFORM].agents.build.build_dir,
                                 installation: 'InSearchPath',
                                 steps: [
                                     [withCmake: true]
