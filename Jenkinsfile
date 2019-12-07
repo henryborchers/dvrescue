@@ -39,7 +39,13 @@ pipeline {
                                     [withCmake: true]
                                 ]
                             )
-                            sh "build/Source/dvrescue --version"
+                            script{
+                                if(isUnix()){
+                                    sh "build/Source/dvrescue --version"
+                                } else{
+                                    bat "build/Source/dvrescue --version"
+                                }
+                            }
                         }
                     }
                     stage("Package dvrescue"){
@@ -77,14 +83,22 @@ pipeline {
                     }
                     stage('Install') {
                         steps {
-                           dir("build"){
-                               sh "sudo cmake --build . --target install"
-                           }
-                            sh "dvrescue --version"
+                            script{
+                                if(isUnix()){
+                                   dir("build"){
+                                       sh "sudo cmake --build . --target install"
+                                   }
+                                    sh "dvrescue --version"
+                                }
+                            }
                         }
                         post{
                             cleanup{
-                                sh "sudo rm -rf build"
+                                script{
+                                    if(isUnix()){
+                                        sh "sudo rm -rf build"
+                                    }
+                                }
                             }
                         }
                     }
