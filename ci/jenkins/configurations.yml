@@ -59,3 +59,15 @@ configurations:
                 additionalBuildArgs: '--build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g)'
             test:
                 dockerImage: ubuntu:18.04
+    visual-studio:
+        os: windows-ltsc2019
+        os_family: windows
+        version: 2019
+        agents:
+            build:
+                dockerfile: ci/jenkins/docker/build/windows-visual-studio/Dockerfile
+                label: windows && docker
+                cpack_generator: WIX
+                additionalBuildArgs: ''
+            test:
+                dockerImage: windowsservercore-ltsc2019

@@ -18,7 +18,8 @@ pipeline {
                             'centos-8',
                             'fedora-31',
                             'ubuntu-16.04',
-                            'ubuntu-18.04'
+                            'ubuntu-18.04',
+                            "visual-studio"
                             )
                     }
                 }
@@ -32,6 +33,11 @@ pipeline {
                 stages {
                     stage('Build dvrescue') {
                         steps {
+                            script{
+                                if(!isUnix()){
+                                    bat "where cmake"
+                                }
+                            }
                             cmakeBuild(
                                 buildDir: 'build',
                                 installation: 'InSearchPath',
