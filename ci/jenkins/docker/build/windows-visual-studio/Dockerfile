@@ -11,7 +11,7 @@ ADD https://aka.ms/vscollect.exe C:/TEMP/collect.exe
 ARG CHANNEL_URL=https://aka.ms/vs/16/release/channel
 ADD ${CHANNEL_URL} C:/TEMP/VisualStudio.chman
 
-# Download and install Build Tools for Visual Studio 2017 for native desktop workload.
+# Download and install Build Tools for Visual Studio 2019
 
 ADD https://aka.ms/vs/16/release/vs_buildtools.exe C:/TEMP/vs_buildtools.exe
 
@@ -34,8 +34,7 @@ RUN (C:\\TEMP\\vs_buildtools.exe `
   && del /S /F /Q %Windir%\Temp `
   && @echo Done cleaning up files in temp directories
 
-RUN REG ADD "HKLM\Software\Microsoft\Command Processor" /v AutoRun /t REG_SZ /d c:\temp\startup.bat
-ADD ci/jenkins/docker/build/windows-visual-studio/starup.bat c:\temp\startup.bat
+
 #RUN setx path "%path%;C:\BuildTools\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin
 RUN @"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))" `
     && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"
@@ -43,3 +42,6 @@ RUN @"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -I
 RUN choco install -y nsis wixtoolset ninja`
     && choco install -y cmake --installargs 'ADD_CMAKE_TO_PATH=System' `
     && del /S /F /Q %ChocolateyInstall%"
+
+ADD ci/jenkins/docker/build/windows-visual-studio/starup.bat c:\temp\startup.bat
+RUN REG ADD "HKLM\Software\Microsoft\Command Processor" /v AutoRun /t REG_SZ /d c:\temp\startup.bat

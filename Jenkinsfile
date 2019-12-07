@@ -36,6 +36,7 @@ pipeline {
                             script{
                                 if(!isUnix()){
                                     bat "where cmake"
+                                    bat "\"C:\\Program Files\\CMake\\bin\\cmake.exe\" --version"
                                 }
                             }
                             cmakeBuild(
