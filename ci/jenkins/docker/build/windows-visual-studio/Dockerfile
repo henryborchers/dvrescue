@@ -51,10 +51,22 @@ RUN $ErrorActionPreference = 'Stop'; `
     $env:PATH = $env:PATH + ';C:\MinGit\cmd\;C:\MinGit\cmd'; `
     Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment\' -Name Path -Value $env:PATH
 
+RUN $ErrorActionPreference = 'Stop'; `
+    mkdir deps ; `
+    Invoke-WebRequest 'https://www.zlib.net/zlib1211.zip' -OutFile c:/deps/zlib.zip ; `
+    Expand-Archive c:\deps\zlib.zip -DestinationPath c:\deps\zlib\source ;
+    dir c:\deps\zlib\source
+
 # Reset the shell.
 SHELL ["cmd", "/S", "/C"]
 ADD ci/jenkins/docker/build/windows-visual-studio/starup.bat c:\temp\startup.bat
 RUN REG ADD "HKLM\Software\Microsoft\Command Processor" /v AutoRun /t REG_SZ /d c:\temp\startup.bat
+
+# TODO. unzip zlib and compile and install it
+RUN mkdir c:\\deps\\zlib\\build && `
+    cd c:\deps\zlib\source && `
+    cmake -S c:/deps/zlib/source -G Ninja && `
+    cmake --build . --target install
 
 RUN git clone https://github.com/MediaArea/ZenLib.git c:/deps/ZenLib/source && `
     mkdir c:\\deps\\ZenLib\\build && `
