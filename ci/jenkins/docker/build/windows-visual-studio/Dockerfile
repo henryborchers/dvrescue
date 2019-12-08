@@ -63,6 +63,7 @@ RUN REG ADD "HKLM\Software\Microsoft\Command Processor" /v AutoRun /t REG_SZ /d 
 
 ENV CMAKE_GENERATOR_PLATFORM=x64
 ENV CMAKE_GENERATOR="Visual Studio 16 2019"
+ENV CMAKE_CONFIG_TYPE="Release"
 
 RUN mkdir c:\\deps\\zlib\\build && `
     cd c:\deps\zlib\source && `
