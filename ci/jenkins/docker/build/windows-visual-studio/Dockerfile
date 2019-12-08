@@ -71,12 +71,15 @@ RUN mkdir c:\\deps\\zlib\\build && `
 #    cmake -S c:/deps/zlib/source/zlib-1.2.11 -G Ninja -DCMAKE_INSTALL_PREFIX:PATH=C:/deps && `
     cmake --build . --target install
 
+RUN setx path "%path%;C:\Program Files\zlib\bin"
+
 RUN git clone https://github.com/MediaArea/ZenLib.git c:/deps/ZenLib/source && `
     mkdir c:\\deps\\ZenLib\\build && `
     cd c:/deps/ZenLib/build && `
     cmake -S c:/deps/ZenLib/source/Project/CMake -G "Visual Studio 16 2019" -A x64 -DCMAKE_INSTALL_PREFIX:PATH="C:/Program Files/ZenLib" && `
 #    cmake -S c:/deps/ZenLib/source/Project/CMake -G Ninja -DCMAKE_INSTALL_PREFIX:PATH=C:/deps && `
     cmake --build . --target install
+RUN setx path "%path%;C:\Program Files\ZenLib\bin"
 
 RUN git clone https://github.com/MediaArea/MediaInfoLib.git c:/deps/MediaInfoLib/source && `
     mkdir c:\\deps\\MediaInfoLib\\build && `

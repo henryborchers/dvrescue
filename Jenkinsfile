@@ -44,11 +44,19 @@ pipeline {
                                 if(isUnix()){
                                     sh "build/Source/dvrescue --version"
                                 } else{
-                                    dir("${CONFIGURATIONS[PLATFORM].agents.build.build_dir}/Source"){
-                                        timeout(time: 10, unit: 'SECONDS') {
-                                            bat "dvrescue --version"
-                                        }
+                                    bat "cd ${CONFIGURATIONS[PLATFORM].agents.build.build_dir}\\Source\\Debug && dvrescue --version"
+                                }
+                            }
+                        }
+                        post{
+                            failure{
+                                script{
+                                    if(isUnix()){
 
+                                    }else{
+                                            timeout(time: 10, unit: 'SECONDS') {
+                                                bat "cd ${CONFIGURATIONS[PLATFORM].agents.build.build_dir}\\Source\\Debug && dir && dumpbin /DEPENDENTS dvrescue"
+                                        }
                                     }
                                 }
                             }
