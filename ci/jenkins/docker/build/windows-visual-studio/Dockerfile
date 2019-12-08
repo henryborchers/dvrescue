@@ -55,7 +55,9 @@ RUN $ErrorActionPreference = 'Stop'; `
     mkdir deps ; `
     Invoke-WebRequest 'https://www.zlib.net/zlib1211.zip' -OutFile c:/deps/zlib.zip ; `
     Expand-Archive c:\deps\zlib.zip -DestinationPath c:\deps\zlib\source
-RUN $env:PATH = $env:PATH + ';C:\Program Files\zlib\bin'
+
+RUN $env:PATH = $env:PATH + ';C:\Program Files\zlib\bin';`
+    Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment\' -Name Path -Value $env:PATH
 
 # Reset the shell.
 SHELL ["cmd", "/S", "/C"]
@@ -64,7 +66,7 @@ RUN REG ADD "HKLM\Software\Microsoft\Command Processor" /v AutoRun /t REG_SZ /d 
 
 ENV CMAKE_GENERATOR_PLATFORM=x64
 ENV CMAKE_GENERATOR="Visual Studio 16 2019"
-ENV CMAKE_CONFIG_TYPE="Release"
+ENV CMAKE_CONFIG_TYPE=Release
 
 RUN mkdir c:\\deps\\zlib\\build && `
     cd c:\deps\zlib\source && `
@@ -74,6 +76,7 @@ RUN mkdir c:\\deps\\zlib\\build && `
 
 
 #RUN setx path "%path%;C:\Program Files\zlib\bin"
+RUN set
 RUN dir "C:\Program Files\zlib\bin"
 RUN git clone https://github.com/MediaArea/ZenLib.git c:/deps/ZenLib/source && `
     mkdir c:\\deps\\ZenLib\\build && `
