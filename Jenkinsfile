@@ -45,7 +45,10 @@ pipeline {
                                     sh "build/Source/dvrescue --version"
                                 } else{
                                     dir("${CONFIGURATIONS[PLATFORM].agents.build.build_dir}/Source"){
-                                        bat "dvrescue --version"
+                                        timeout(time: 10, unit: 'SECONDS') {
+                                            bat "dvrescue --version"
+                                        }
+
                                     }
                                 }
                             }
