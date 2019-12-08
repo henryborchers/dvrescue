@@ -68,7 +68,7 @@ pipeline {
                             cpack(
                                 arguments: "-G ${CONFIGURATIONS[PLATFORM].agents.build.cpack_generator}",
                                 installation: 'InSearchPath',
-                                workingDir: 'build'
+                                workingDir: "${CONFIGURATIONS[PLATFORM].agents.build.build_dir}"
                                 )
                         }
                         post{
