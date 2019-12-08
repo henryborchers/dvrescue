@@ -64,13 +64,11 @@ SHELL ["cmd", "/S", "/C"]
 ADD ci/jenkins/docker/build/windows-visual-studio/starup.bat c:\temp\startup.bat
 RUN REG ADD "HKLM\Software\Microsoft\Command Processor" /v AutoRun /t REG_SZ /d c:\temp\startup.bat
 
-ENV CMAKE_GENERATOR_PLATFORM=x64
-ENV CMAKE_GENERATOR="Visual Studio 16 2019"
-ENV CMAKE_CONFIG_TYPE=Release
+ENV CMAKE_GENERATOR=Ninja
 
 RUN mkdir c:\\deps\\zlib\\build && `
     cd c:\deps\zlib\source && `
-    cmake -S c:/deps/zlib/source/zlib-1.2.11 -G "Visual Studio 16 2019" -A x64 -DCMAKE_INSTALL_PREFIX:PATH="C:/Program Files/zlib" && `
+    cmake -S c:/deps/zlib/source/zlib-1.2.11 -DCMAKE_INSTALL_PREFIX:PATH="C:/Program Files/zlib" && `
 #    cmake -S c:/deps/zlib/source/zlib-1.2.11 -G Ninja -DCMAKE_INSTALL_PREFIX:PATH=C:/deps && `
     cmake --build . --target install
 
@@ -81,7 +79,7 @@ RUN dir "C:\Program Files\zlib\bin"
 RUN git clone https://github.com/MediaArea/ZenLib.git c:/deps/ZenLib/source && `
     mkdir c:\\deps\\ZenLib\\build && `
     cd c:/deps/ZenLib/build && `
-    cmake -S c:/deps/ZenLib/source/Project/CMake -G "Visual Studio 16 2019" -A x64 -DCMAKE_INSTALL_PREFIX:PATH="C:/Program Files/ZenLib" && `
+    cmake -S c:/deps/ZenLib/source/Project/CMake -DCMAKE_INSTALL_PREFIX:PATH="C:/Program Files/ZenLib" && `
 #    cmake -S c:/deps/ZenLib/source/Project/CMake -G Ninja -DCMAKE_INSTALL_PREFIX:PATH=C:/deps && `
     cmake --build . --target install
 
@@ -90,6 +88,6 @@ RUN setx path "%path%;C:\Program Files\ZenLib\bin"
 RUN git clone https://github.com/MediaArea/MediaInfoLib.git c:/deps/MediaInfoLib/source && `
     mkdir c:\\deps\\MediaInfoLib\\build && `
     cd c:/deps/MediaInfoLib/build && `
-    cmake -S c:/deps/MediaInfoLib/source/Project/CMake -G "Visual Studio 16 2019" -A x64 -DCMAKE_INSTALL_PREFIX:PATH="C:/Program Files/MediaInfoLib" -DBUILD_ZLIB:BOOL=no -DBUILD_ZENLIB:BOOL=no && `
+    cmake -S c:/deps/MediaInfoLib/source/Project/CMake -DCMAKE_INSTALL_PREFIX:PATH="C:/Program Files/MediaInfoLib" -DBUILD_ZLIB:BOOL=no -DBUILD_ZENLIB:BOOL=no && `
 #    cmake -S c:/deps/MediaInfoLib/source/Project/CMake -G Ninja -DCMAKE_INSTALL_PREFIX:PATH=C:/deps -DBUILD_ZLIB:BOOL=no -DBUILD_ZENLIB:BOOL=no && `
     cmake --build . --target install
