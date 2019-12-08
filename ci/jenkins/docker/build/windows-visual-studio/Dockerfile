@@ -55,6 +55,7 @@ RUN $ErrorActionPreference = 'Stop'; `
     mkdir deps ; `
     Invoke-WebRequest 'https://www.zlib.net/zlib1211.zip' -OutFile c:/deps/zlib.zip ; `
     Expand-Archive c:\deps\zlib.zip -DestinationPath c:\deps\zlib\source
+RUN $env:PATH = $env:PATH + ';C:\Program Files\zlib\bin'
 
 # Reset the shell.
 SHELL ["cmd", "/S", "/C"]
@@ -71,7 +72,6 @@ RUN mkdir c:\\deps\\zlib\\build && `
 #    cmake -S c:/deps/zlib/source/zlib-1.2.11 -G Ninja -DCMAKE_INSTALL_PREFIX:PATH=C:/deps && `
     cmake --build . --target install
 
-RUN setx /M PATH "C:\Program Files\zlib\bin;%PATH%"
 
 #RUN setx path "%path%;C:\Program Files\zlib\bin"
 RUN dir "C:\Program Files\zlib\bin"
