@@ -72,7 +72,7 @@ RUN mkdir c:\\deps\\zlib\\build && `
     cmake --build . --target install
 
 RUN setx path "%path%;C:\Program Files\zlib\bin"
-RUN dir "C:\Program Files\zlib"
+RUN dir "C:\Program Files\zlib\bin"
 RUN git clone https://github.com/MediaArea/ZenLib.git c:/deps/ZenLib/source && `
     mkdir c:\\deps\\ZenLib\\build && `
     cd c:/deps/ZenLib/build && `

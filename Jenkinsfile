@@ -44,6 +44,7 @@ pipeline {
                                 if(isUnix()){
                                     sh "build/Source/dvrescue --version"
                                 } else{
+                                    bat "set"
                                     bat "cd ${CONFIGURATIONS[PLATFORM].agents.build.build_dir}\\Source\\Debug && dvrescue.exe --version"
                                 }
                             }
