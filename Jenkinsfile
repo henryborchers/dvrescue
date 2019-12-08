@@ -44,7 +44,7 @@ pipeline {
                                 if(isUnix()){
                                     sh "build/Source/dvrescue --version"
                                 } else{
-                                    bat "cd ${CONFIGURATIONS[PLATFORM].agents.build.build_dir}\\Source\\Debug && dvrescue --version"
+                                    bat "cd ${CONFIGURATIONS[PLATFORM].agents.build.build_dir}\\Source\\Debug && dvrescue.exe --version"
                                 }
                             }
                         }
@@ -55,7 +55,7 @@ pipeline {
 
                                     }else{
                                             timeout(time: 10, unit: 'SECONDS') {
-                                                bat "cd ${CONFIGURATIONS[PLATFORM].agents.build.build_dir}\\Source\\Debug && dir && dumpbin /DEPENDENTS dvrescue"
+                                                bat "cd ${CONFIGURATIONS[PLATFORM].agents.build.build_dir}\\Source\\Debug && dir && dumpbin /DEPENDENTS dvrescue.exe"
                                         }
                                     }
                                 }
