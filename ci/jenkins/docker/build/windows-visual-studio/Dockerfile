@@ -62,7 +62,7 @@ ADD ci/jenkins/docker/build/windows-visual-studio/starup.bat c:\temp\startup.bat
 RUN REG ADD "HKLM\Software\Microsoft\Command Processor" /v AutoRun /t REG_SZ /d c:\temp\startup.bat
 
 ENV CMAKE_GENERATOR_PLATFORM=x64
-# TODO. unzip zlib and compile and install it
+ENV CMAKE_GENERATOR="Visual Studio 16 2019"
 
 RUN mkdir c:\\deps\\zlib\\build && `
     cd c:\deps\zlib\source && `
