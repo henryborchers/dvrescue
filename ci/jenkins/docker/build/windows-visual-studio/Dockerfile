@@ -92,4 +92,7 @@ RUN git clone https://github.com/MediaArea/MediaInfoLib.git c:/deps/MediaInfoLib
 #    cmake -S c:/deps/MediaInfoLib/source/Project/CMake -G Ninja -DCMAKE_INSTALL_PREFIX:PATH=C:/deps -DBUILD_ZLIB:BOOL=no -DBUILD_ZENLIB:BOOL=no && `
     cmake --build . --target install
 
-RUN where ninja
+SHELL ["powershell", "-command"]
+RUN $env:PATH = $env:PATH + ';C:\BuildTools\Common7\IDE\CommonExtensions\Microsoft\CMake\Ninja'; `
+    Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment\' -Name Path -Value $env:PATH
+SHELL ["cmd", "/S", "/C"]
