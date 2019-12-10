@@ -59,3 +59,15 @@ configurations:
                 additionalBuildArgs: '--build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g)'
             test:
                 dockerImage: ubuntu:18.04
+    ubuntu-16.04-nocurl:
+        os: ubuntu
+        os_family: linux
+        version: 18.04
+        agents:
+            build:
+                dockerfile: ci/jenkins/docker/build/ubuntu-16.04-nocurl/Dockerfile
+                label: linux && docker
+                cpack_generator: DEB
+                additionalBuildArgs: '--build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g)'
+            test:
+                dockerImage: ubuntu:18.04
