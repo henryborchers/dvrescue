@@ -151,6 +151,19 @@ pipeline {
                 agent {
                     label 'linux && docker'
                 }
+                when {
+                    anyOf{
+                        allOf{
+                            expression { params.BuildWindows == true }
+                            expression { CONFIGURATIONS[PLATFORM].os_family == "windows"}
+                        }
+                        allOf{
+                            expression { params.BuildLinux == true }
+                            expression { CONFIGURATIONS[PLATFORM].os_family == "linux"}
+                        }
+                    }
+                    beforeAgent true
+                }
                 axes {
                     axis {
                         name 'PLATFORM'
