@@ -9,6 +9,7 @@ pipeline {
     agent none
     parameters {
       booleanParam defaultValue: false, description: 'Build for windows', name: 'BuildWindows'
+      booleanParam defaultValue: true, description: 'Build for linux', name: 'BuildLinux'
     }
     stages {
         stage('Build') {
@@ -35,8 +36,14 @@ pipeline {
                 }
                 when {
                     anyOf{
-                        expression { params.BuildWindows == true }
-                        expression { CONFIGURATIONS[PLATFORM].os_family == "linux"}
+                        allOf{
+                            expression { params.BuildWindows == true }
+                            expression { CONFIGURATIONS[PLATFORM].os_family == "windows"}
+                        }
+                        allOf{
+                            expression { params.BuildLinux == true }
+                            expression { CONFIGURATIONS[PLATFORM].os_family == "linux"}
+                        }
                     }
                     beforeAgent true
                 }
