@@ -7,6 +7,9 @@ def load_configurations(){
 def CONFIGURATIONS = load_configurations()
 pipeline {
     agent none
+    parameters {
+      booleanParam defaultValue: false, description: 'Build for windows', name: 'BuildWindows'
+    }
     stages {
         stage('Build') {
             matrix {
@@ -29,6 +32,13 @@ pipeline {
                         label CONFIGURATIONS[PLATFORM].agents.build.label
                         additionalBuildArgs "${CONFIGURATIONS[PLATFORM].agents.build.additionalBuildArgs}"
                     }
+                }
+                when {
+                    anyOf{
+                        expression { params.BuildWindows == true }
+                        expression { CONFIGURATIONS[PLATFORM].os_family == "linux"}
+                    }
+                    beforeAgent true
                 }
                 stages {
                     stage('Build dvrescue') {
