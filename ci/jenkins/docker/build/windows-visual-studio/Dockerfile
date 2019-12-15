@@ -74,8 +74,6 @@ RUN mkdir c:\\deps\\zlib\\build && `
 
 
 #RUN setx path "%path%;C:\Program Files\zlib\bin"
-RUN set
-RUN dir "C:\Program Files\zlib\bin"
 RUN git clone https://github.com/MediaArea/ZenLib.git c:/deps/ZenLib/source && `
     mkdir c:\\deps\\ZenLib\\build && `
     cd c:/deps/ZenLib/build && `
@@ -88,7 +86,8 @@ RUN setx path "%path%;C:\Program Files\ZenLib\bin"
 RUN git clone https://github.com/MediaArea/MediaInfoLib.git c:/deps/MediaInfoLib/source && `
     mkdir c:\\deps\\MediaInfoLib\\build && `
     cd c:/deps/MediaInfoLib/build && `
-    cmake -S c:/deps/MediaInfoLib/source/Project/CMake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH="C:/Program Files/MediaInfoLib" -DBUILD_ZLIB:BOOL=no -DBUILD_ZENLIB:BOOL=no && `
+    cmake -S c:/deps/MediaInfoLib/source/Project/CMake -DCMAKE_BUILD_TYPE=Release -DBUILD_ZLIB:BOOL=no -DBUILD_ZENLIB:BOOL=no && `
+#    cmake -S c:/deps/MediaInfoLib/source/Project/CMake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH="C:/Program Files/MediaInfoLib" -DBUILD_ZLIB:BOOL=no -DBUILD_ZENLIB:BOOL=no && `
 #    cmake -S c:/deps/MediaInfoLib/source/Project/CMake -G Ninja -DCMAKE_INSTALL_PREFIX:PATH=C:/deps -DBUILD_ZLIB:BOOL=no -DBUILD_ZENLIB:BOOL=no && `
     cmake --build . --target install
 
