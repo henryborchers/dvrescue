@@ -60,6 +60,8 @@ pipeline {
                                 ]
                             )
                             script{
+                                def dvrescue_executable = findFiles(glob: '**/dvrescue')[0]
+                                echo "Location of dvrescue ${dvrescue_executable}"
                                 if(isUnix()){
                                     sh "build/Source/dvrescue --version"
                                 } else{
