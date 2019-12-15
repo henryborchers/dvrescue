@@ -74,7 +74,7 @@ pipeline {
                             failure{
                                 script{
                                     if(isUnix()){
-
+                                        sh "ls -R"
                                     }else{
                                             timeout(time: 10, unit: 'SECONDS') {
                                                 bat(
