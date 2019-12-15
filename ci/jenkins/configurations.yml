@@ -48,6 +48,7 @@ configurations:
                 label: linux && docker
                 cpack_generator: RPM
                 additionalBuildArgs: '--build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g)'
+                build_dir: build
             test:
                 dockerImage: fedora:31
     ubuntu-16.04:
@@ -73,6 +74,7 @@ configurations:
                 label: linux && docker
                 cpack_generator: DEB
                 additionalBuildArgs: '--build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g)'
+                build_dir: build
             test:
                 dockerImage: ubuntu:18.04
     ubuntu-18.04:
