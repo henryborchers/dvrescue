@@ -38,6 +38,18 @@ configurations:
                 build_dir: build
             test:
                 dockerImage: fedora:31
+    fedora-31-nocurl:
+        os: fedora
+        os_family: linux
+        version: 31
+        agents:
+            build:
+                dockerfile: ci/jenkins/docker/build/fedora-31-nocurl/Dockerfile
+                label: linux && docker
+                cpack_generator: RPM
+                additionalBuildArgs: '--build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g)'
+            test:
+                dockerImage: fedora:31
     ubuntu-16.04:
         os: ubuntu
         os_family: linux
@@ -51,6 +63,18 @@ configurations:
                 build_dir: build
             test:
                 dockerImage: ubuntu:16.04
+    ubuntu-16.04-nocurl:
+        os: ubuntu
+        os_family: linux
+        version: 18.04
+        agents:
+            build:
+                dockerfile: ci/jenkins/docker/build/ubuntu-16.04-nocurl/Dockerfile
+                label: linux && docker
+                cpack_generator: DEB
+                additionalBuildArgs: '--build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g)'
+            test:
+                dockerImage: ubuntu:18.04
     ubuntu-18.04:
         os: ubuntu
         os_family: linux
