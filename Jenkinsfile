@@ -24,7 +24,7 @@ pipeline {
                             'fedora-31-nocurl',
                             'ubuntu-16.04',
                             'ubuntu-16.04-nocurl',
-                            'ubuntu-18.04'
+                            'ubuntu-18.04',
                             "visual-studio"
                             )
                     }
