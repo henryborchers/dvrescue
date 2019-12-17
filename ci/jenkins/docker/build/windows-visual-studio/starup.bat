@@ -1,4 +1,5 @@
 @echo off
 if not defined DevEnvDir (
-    CALL C:\BuildTools\Common7\Tools\VsDevCmd.bat  -arch=amd64 -host_arch=amd64
+    REM C:\BuildTools\VC\Auxiliary\Build\vcvars32.bat
+    CALL C:\BuildTools\Common7\Tools\VsDevCmd.bat  -arch=%VSVSDEVCMD_ARCH%
     )
