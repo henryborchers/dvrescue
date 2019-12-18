@@ -36,19 +36,13 @@ RUN (C:\\TEMP\\vs_buildtools.exe `
   && @echo Done cleaning up files in temp directories
 
 
-RUN @"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))" `
-    && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"
-
-RUN choco install -y nsis wixtoolset ninja git.install`
-    && choco install -y cmake --installargs 'ADD_CMAKE_TO_PATH=System' `
-    && del C:\ProgramData\chocolatey\bin\cpack.exe
-
 SHELL ["powershell", "-command"]
+RUN Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 
-RUN $ErrorActionPreference = 'Stop'; `
-    mkdir deps ; `
-    Invoke-WebRequest 'https://www.zlib.net/zlib1211.zip' -OutFile c:/deps/zlib.zip ; `
-    Expand-Archive c:\deps\zlib.zip -DestinationPath c:\deps\zlib\source
+ADD ci/jenkins/docker/build/windows-visual-studio/packages.config packages.config
+RUN choco install -y packages.config ; `
+    Remove-Item C:\ProgramData\chocolatey\bin\cpack.exe ; `
+    Remove-Item C:\Users\ContainerAdministrator\AppData\Local\Temp\chocolatey -Recurse
 
 ARG CMAKE_GENERATOR="Visual Studio 16 2019"
 ARG CMAKE_GENERATOR_PLATFORM=Win32
@@ -64,6 +58,8 @@ ENV CMAKE_GENERATOR=${CMAKE_GENERATOR}
 ENV CMAKE_GENERATOR_PLATFORM=${CMAKE_GENERATOR_PLATFORM}
 ENV CMAKE_CONFIG_TYPE=${CMAKE_CONFIG_TYPE}
 RUN mkdir c:\\deps\\zlib\\build && `
+    powershell -Command "Invoke-WebRequest 'https://www.zlib.net/zlib1211.zip' -OutFile c:/deps/zlib.zip" && `
+    powershell -Command "Expand-Archive c:\deps\zlib.zip -DestinationPath c:\deps\zlib\source" && `
     cd c:\deps\zlib\build && `
     C:\BuildTools\Common7\Tools\VsDevCmd.bat -arch=%VSVSDEVCMD_ARCH% && `
     cmake -S c:/deps/zlib/source/zlib-1.2.11 -DCMAKE_INSTALL_PREFIX:PATH="%DEPENDENCIES_INSTALL_PATH%" && `
