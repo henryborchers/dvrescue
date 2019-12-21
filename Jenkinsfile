@@ -64,13 +64,13 @@ pipeline {
                                 ]
                             )
                             script{
-                                def dvrescue_executable = findFiles(glob: '**/dvrescue')[0]
-                                echo "Location of dvrescue ${dvrescue_executable}"
                                 if(isUnix()){
+                                    def dvrescue_executable = findFiles(glob: '**/dvrescue')[0]
+                                    echo "Location of dvrescue ${dvrescue_executable}"
                                     sh "build/Source/dvrescue --version"
                                 } else{
                                     bat "set"
-                                    bat "cd ${CONFIGURATIONS[PLATFORM].agents.build.build_dir}\\Source\\Debug && dvrescue.exe --version"
+                                    bat "cd ${CONFIGURATIONS[PLATFORM].agents.build.build_dir}\\Source\\Release && dvrescue.exe --version"
                                 }
                             }
                         }
