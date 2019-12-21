@@ -39,7 +39,7 @@ RUN (C:\\TEMP\\vs_buildtools.exe `
 SHELL ["powershell", "-command"]
 RUN Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 
-ADD ci/jenkins/docker/build/windows-visual-studio/packages.config packages.config
+ADD ci/jenkins/docker/build/windows-visual-studio-2019/packages.config packages.config
 RUN choco install -y packages.config ; `
     Remove-Item C:\ProgramData\chocolatey\bin\cpack.exe ; `
     Remove-Item C:\Users\ContainerAdministrator\AppData\Local\Temp\chocolatey -Recurse
@@ -80,7 +80,7 @@ RUN git clone https://github.com/MediaArea/MediaInfoLib.git c:/deps/MediaInfoLib
     cmake --build . --config %CMAKE_CONFIG_TYPE% --target install && `
     rmdir c:\deps /s /q
 
-ADD ci/jenkins/docker/build/windows-visual-studio/starup.bat c:\temp\startup.bat
+ADD ci/jenkins/docker/build/windows-visual-studio-2019/starup.bat c:\temp\startup.bat
 ENV VSVSDEVCMD_ARCH=${VSVSDEVCMD_ARCH}
 RUN REG ADD "HKLM\Software\Microsoft\Command Processor" /v AutoRun /t REG_SZ /d c:\temp\startup.bat
 
