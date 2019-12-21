@@ -55,6 +55,7 @@ pipeline {
                             cmakeBuild(
                                 buildDir: CONFIGURATIONS[PLATFORM].agents.build.build_dir,
                                 installation: 'InSearchPath',
+                                buildType: 'Release',
                                 steps: [
                                     [withCmake: true]
                                 ]
