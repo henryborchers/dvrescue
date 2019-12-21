@@ -57,7 +57,10 @@ pipeline {
                                 installation: 'InSearchPath',
                                 buildType: 'Release',
                                 steps: [
-                                    [withCmake: true]
+                                    [
+                                        args: '--config Release',
+                                        withCmake: true,
+                                    ]
                                 ]
                             )
                             script{
