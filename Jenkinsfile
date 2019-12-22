@@ -8,7 +8,7 @@ def CONFIGURATIONS = load_configurations()
 pipeline {
     agent none
     parameters {
-      booleanParam defaultValue: false, description: 'Build for windows', name: 'BuildWindows'
+      booleanParam defaultValue: true, description: 'Build for windows', name: 'BuildWindows'
       booleanParam defaultValue: true, description: 'Build for linux', name: 'BuildLinux'
     }
     stages {
