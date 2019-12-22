@@ -103,3 +103,16 @@ configurations:
                 build_dir: c:\build
             test:
                 dockerImage: windowsservercore-ltsc2019
+    visual-studio-2019-64bit:
+        os: windows-ltsc2019
+        os_family: windows
+        version: 2019
+        agents:
+            build:
+                dockerfile: ci/jenkins/docker/build/windows-visual-studio-2019/Dockerfile
+                label: windows && docker
+                cpack_generator: WIX
+                additionalBuildArgs: '--build-arg CMAKE_GENERATOR_PLATFORM=x64 --build-arg VSVSDEVCMD_ARCHM=x64 --build-arg DEPENDENCIES_INSTALL_PATH="C:\Program Files\dvrescue"'
+                build_dir: c:\build
+            test:
+                dockerImage: windowsservercore-ltsc2019
