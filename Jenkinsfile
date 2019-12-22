@@ -188,7 +188,8 @@ pipeline {
                             'fedora-31',
                             'ubuntu-16.04',
                             'ubuntu-18.04',
-                            'visual-studio-2019-32bit'
+                            'visual-studio-2019-32bit',
+                            'visual-studio-2019-64bit'
                             )
                     }
                 }
@@ -204,7 +205,7 @@ pipeline {
                                 unstash "${PLATFORM}-PACKAGE"
                                 if(CONFIGURATIONS[PLATFORM].os_family == "windows"){
                                     test_machine.inside("--user ContainerAdministrator") {
-                                        bat "msiexec /i ${findFiles(glob: '*.msi')[0]} /q"
+                                        powershell "msiexec /i ${findFiles(glob: '*.msi')[0]} /qn /norestart /L*v! msiexec.log"
                                         bat(script: CONFIGURATIONS[PLATFORM].agents.test.runCommand)
                                     }
                                 }else{
