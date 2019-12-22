@@ -12,6 +12,7 @@ configurations:
                 build_dir: build
             test:
               dockerImage: centos:7
+              label: linux && docker
     centos-8:
         os: centos
         os_family: linux
@@ -25,6 +26,7 @@ configurations:
                 build_dir: build
             test:
                 dockerImage: centos:8
+                label: linux && docker
     fedora-31:
         os: fedora
         os_family: linux
@@ -38,6 +40,7 @@ configurations:
                 build_dir: build
             test:
                 dockerImage: fedora:31
+                label: linux && docker
     fedora-31-nocurl:
         os: fedora
         os_family: linux
@@ -51,6 +54,7 @@ configurations:
                 build_dir: build
             test:
                 dockerImage: fedora:31
+                label: linux && docker
     ubuntu-16.04:
         os: ubuntu
         os_family: linux
@@ -64,6 +68,7 @@ configurations:
                 build_dir: build
             test:
                 dockerImage: ubuntu:16.04
+                label: linux && docker
     ubuntu-16.04-nocurl:
         os: ubuntu
         os_family: linux
@@ -77,6 +82,7 @@ configurations:
                 build_dir: build
             test:
                 dockerImage: ubuntu:18.04
+                label: linux && docker
     ubuntu-18.04:
         os: ubuntu
         os_family: linux
@@ -90,6 +96,7 @@ configurations:
                 build_dir: build
             test:
                 dockerImage: ubuntu:18.04
+                label: linux && docker
     visual-studio-2019-32bit:
         os: windows-ltsc2019
         os_family: windows
@@ -104,6 +111,7 @@ configurations:
             test:
                 dockerImage: mcr.microsoft.com/windows/servercore:ltsc2019
                 runCommand: '"C:\Program Files (x86)\dvrescue\bin\dvrescue.exe" --version'
+                label: windows && docker
     visual-studio-2019-64bit:
         os: windows-ltsc2019
         os_family: windows
@@ -118,3 +126,4 @@ configurations:
             test:
                 dockerImage: mcr.microsoft.com/windows/servercore:ltsc2019
                 runCommand: '"C:\Program Files\dvrescue\bin\dvrescue.exe" --version'
+                label: windows && docker

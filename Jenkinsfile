@@ -164,7 +164,7 @@ pipeline {
         stage("Testing Install Package"){
             matrix{
                 agent {
-                    label 'linux && docker'
+                    label CONFIGURATIONS[PLATFORM].agents.test.label
                 }
                 when {
                     anyOf{
