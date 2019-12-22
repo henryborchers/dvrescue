@@ -194,36 +194,33 @@ pipeline {
                     }
                 }
                 stages {
-                    stage("Install Package"){
+                    stage("Install Linux Package"){
                         options{
                              skipDefaultCheckout true
+                        }
+                        when{
+                            expression {CONFIGURATIONS[PLATFORM].os_family == "linux"}
+                            beforeAgent true
                         }
                         steps{
                             echo "Testing installing on ${PLATFORM}"
                             script{
                                 def test_machine = docker.image(CONFIGURATIONS[PLATFORM].agents.test.dockerImage)
                                 unstash "${PLATFORM}-PACKAGE"
-                                if(CONFIGURATIONS[PLATFORM].os_family == "windows"){
-                                    test_machine.inside("--user ContainerAdministrator") {
-                                        powershell "msiexec /i ${findFiles(glob: '*.msi')[0]} /qn /norestart /L*v! msiexec.log"
-                                        bat(script: CONFIGURATIONS[PLATFORM].agents.test.runCommand)
+                                test_machine.inside("--user root") {
+                                    if(PLATFORM.contains("ubuntu")){
+                                        sh "apt update && apt-get install -y -f ./${findFiles(glob: '*.deb')[0]}"
                                     }
-                                }else{
-                                    test_machine.inside("--user root") {
-                                        if(PLATFORM.contains("ubuntu")){
-                                            sh "apt update && apt-get install -y -f ./${findFiles(glob: '*.deb')[0]}"
-                                        }
 
-                                        if(PLATFORM.contains("fedora")){
-                                            sh "dnf -y localinstall ./${findFiles(glob: '*.rpm')[0]}"
-                                        }
-                                        if(PLATFORM.contains("centos")){
-                                            sh "yum -y update"
-                                            sh "yum install -y epel-release"
-                                            sh "yum -y localinstall ./${findFiles(glob: '*.rpm')[0]}"
-                                        }
-                                        sh "dvrescue --version"
+                                    if(PLATFORM.contains("fedora")){
+                                        sh "dnf -y localinstall ./${findFiles(glob: '*.rpm')[0]}"
                                     }
+                                    if(PLATFORM.contains("centos")){
+                                        sh "yum -y update"
+                                        sh "yum install -y epel-release"
+                                        sh "yum -y localinstall ./${findFiles(glob: '*.rpm')[0]}"
+                                    }
+                                    sh "dvrescue --version"
 
                                 }
                             }
@@ -231,6 +228,34 @@ pipeline {
                         post{
                             cleanup{
                                 cleanWs()
+                            }
+                        }
+                    }
+                    stage("Install MSI Package"){
+                        options{
+                              skipDefaultCheckout true
+                        }
+                        when{
+                            expression { CONFIGURATIONS[PLATFORM].os_family == "windows"}
+                            beforeAgent true
+                        }
+                        steps{
+                            echo "installing msi"
+                            unstash "${PLATFORM}-PACKAGE"
+                            script{
+                                def test_machine = docker.image(CONFIGURATIONS[PLATFORM].agents.test.dockerImage)
+                                test_machine.inside("--user ContainerAdministrator") {
+                                    powershell "msiexec /i ${findFiles(glob: '*.msi')[0]} /qn /norestart /L*v! msiexec.log"
+                                    bat(script: CONFIGURATIONS[PLATFORM].agents.test.runCommand)
+                                }
+                            }
+                        }
+                        post{
+                            always{
+                                powershell "Get-Content msiexec.log"
+                            }
+                            failure{
+                                bat 'tree "C:\\Program Files" /A /F'
                             }
                         }
                     }
