@@ -155,7 +155,7 @@ pipeline {
                 }
                 post{
                     cleanup{
-                        cleanWs()
+                        cleanWs( notFailBuild: true)
                     }
                 }
             }
