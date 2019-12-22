@@ -101,6 +101,12 @@ pipeline {
                         }
                         post{
                             success{
+                                script{
+                                    if(CONFIGURATIONS[PLATFORM].os_family == "windows"){
+                                        bat "if not exist build mkdir build"
+                                        bat "cd build && copy ${CONFIGURATIONS[PLATFORM].agents.build.build_dir}\\*.msi"
+                                    }
+                                }
                                 dir("build"){
                                     stash includes: '*.rpm,*.deb,*.msi', name: "${PLATFORM}-PACKAGE"
                                     script{
