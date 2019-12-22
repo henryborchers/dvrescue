@@ -90,7 +90,7 @@ configurations:
                 build_dir: build
             test:
                 dockerImage: ubuntu:18.04
-    visual-studio-2019:
+    visual-studio-2019-32bit:
         os: windows-ltsc2019
         os_family: windows
         version: 2019
