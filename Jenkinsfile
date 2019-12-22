@@ -187,7 +187,8 @@ pipeline {
                             'centos-8',
                             'fedora-31',
                             'ubuntu-16.04',
-                            'ubuntu-18.04'
+                            'ubuntu-18.04',
+                            'visual-studio-2019-32bit'
                             )
                     }
                 }
@@ -200,23 +201,29 @@ pipeline {
                             echo "Testing installing on ${PLATFORM}"
                             script{
                                 def test_machine = docker.image(CONFIGURATIONS[PLATFORM].agents.test.dockerImage)
-                                test_machine.inside("--user root") {
-                                    unstash "${PLATFORM}-PACKAGE"
+                                unstash "${PLATFORM}-PACKAGE"
+                                if(CONFIGURATIONS[PLATFORM].os_family == "windows"){
+                                    test_machine.inside("--user ContainerAdministrator") {
+                                        bat "msiexec /i ${findFiles(glob: '*.msi')[0]} /q"
+                                        bat(script: CONFIGURATIONS[PLATFORM].agents.test.runCommand)
+                                    }
+                                }else{
+                                    test_machine.inside("--user root") {
+                                        if(PLATFORM.contains("ubuntu")){
+                                            sh "apt update && apt-get install -y -f ./${findFiles(glob: '*.deb')[0]}"
+                                        }
 
-                                    if(PLATFORM.contains("ubuntu")){
-                                        sh "apt update && apt-get install -y -f ./${findFiles(glob: '*.deb')[0]}"
+                                        if(PLATFORM.contains("fedora")){
+                                            sh "dnf -y localinstall ./${findFiles(glob: '*.rpm')[0]}"
+                                        }
+                                        if(PLATFORM.contains("centos")){
+                                            sh "yum -y update"
+                                            sh "yum install -y epel-release"
+                                            sh "yum -y localinstall ./${findFiles(glob: '*.rpm')[0]}"
+                                        }
+                                        sh "dvrescue --version"
                                     }
 
-                                    if(PLATFORM.contains("fedora")){
-                                        sh "dnf -y localinstall ./${findFiles(glob: '*.rpm')[0]}"
-                                    }
-                                    if(PLATFORM.contains("centos")){
-                                        sh "yum -y update"
-                                        sh "yum install -y epel-release"
-                                        sh "yum -y localinstall ./${findFiles(glob: '*.rpm')[0]}"
-                                    }
-
-                                    sh "dvrescue --version"
                                 }
                             }
                         }
