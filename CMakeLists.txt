@@ -12,6 +12,10 @@ find_package(MediaInfoLib REQUIRED)
 add_subdirectory(Source)
 add_subdirectory(tools)
 
+# Creates an exact copy of the license file in the build directory to help WIX TOOLSET
+# convert the license in to it's expected .rtf format when creating MSI installers
+configure_file(LICENSE ${PROJECT_BINARY_DIR}/LICENSE.txt)
+
 # Set the packaging variables in Project/CMake/CPackConfig.cmake. Anything
 # not set here will be derived from the project metadata or use a default template,
 include(Project/CMake/CPackConfig.cmake)
