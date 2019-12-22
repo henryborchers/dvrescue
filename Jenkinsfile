@@ -102,7 +102,7 @@ pipeline {
                         post{
                             success{
                                 dir("build"){
-                                    stash includes: '*.rpm,*.deb', name: "${PLATFORM}-PACKAGE"
+                                    stash includes: '*.rpm,*.deb,*.msi', name: "${PLATFORM}-PACKAGE"
                                     script{
                                         if(PLATFORM.contains("ubuntu")){
                                             sh "cat ${findFiles(glob: '**/control')[0]}"
