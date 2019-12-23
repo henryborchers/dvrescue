@@ -53,23 +53,25 @@ pipeline {
                 stages {
                     stage('Build dvrescue') {
                         steps {
-                            cmakeBuild(
-                                buildDir: CONFIGURATIONS[PLATFORM].agents.build.build_dir,
-                                installation: 'InSearchPath',
-                                buildType: 'Release',
-                                steps: [
-                                    [
-                                        args: '--config Release',
-                                        withCmake: true,
-                                    ]
-                                ]
-                            )
                             script{
                                 if(isUnix()){
+                                    cmakeBuild(
+                                        buildDir: CONFIGURATIONS[PLATFORM].agents.build.build_dir,
+                                        installation: 'InSearchPath',
+                                        buildType: 'Release',
+                                        steps: [
+                                            [
+                                                args: '--config Release',
+                                                withCmake: true,
+                                            ]
+                                        ]
+                                    )
                                     def dvrescue_executable = findFiles(glob: '**/dvrescue')[0]
                                     echo "Location of dvrescue ${dvrescue_executable}"
                                     sh "build/Source/dvrescue --version"
                                 } else{
+                                    bat "cmake -S . -B ${CONFIGURATIONS[PLATFORM].agents.build.build_dir}"
+                                    bat "cmake --build ${CONFIGURATIONS[PLATFORM].agents.build.build_dir} --config Release"
                                     bat "set"
                                     bat "cd ${CONFIGURATIONS[PLATFORM].agents.build.build_dir}\\Source\\Release && dvrescue.exe --version"
                                 }
