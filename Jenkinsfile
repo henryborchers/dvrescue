@@ -263,7 +263,7 @@ pipeline {
                                     } catch( Exception e){
                                         bat 'tree "C:\\Program Files" /A /F > %PLATFORM%-tree.log'
                                         bat 'tree "C:\\Program Files (x86)" /A /F >> %PLATFORM%-tree.log'
-                                        error "{e}"
+                                        error "${e}"
                                     }
                                 }
                             }
