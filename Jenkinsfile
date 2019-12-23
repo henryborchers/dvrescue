@@ -267,8 +267,8 @@ pipeline {
                                 archiveArtifacts '*.log'
                             }
                             failure{
-                                bat '''tree "C:\\Program Files" /A /F > %PLATFORM%-tree.log
-tree "C:\\Program Files (x86)" /A /F >> %PLATFORM%-tree.log'''
+                                bat 'tree "C:\\Program Files" /A /F > %PLATFORM%-tree.log'
+                                bat 'tree "C:\\Program Files (x86)" /A /F >> %PLATFORM%-tree.log'
                                 archiveArtifacts '*tree.log'
                             }
                         }
