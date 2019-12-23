@@ -149,6 +149,7 @@ pipeline {
                                     sh "dvrescue --version"
                                 } else{
                                     bat "cmake --build ${CONFIGURATIONS[PLATFORM].agents.build.build_dir} --config Release --target install"
+                                    bat "where dvrescue"
                                     bat "dvrescue --version"
                                 }
                             }
