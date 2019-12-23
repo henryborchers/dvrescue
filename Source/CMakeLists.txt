@@ -18,4 +18,22 @@ set_target_properties(dvrescue PROPERTIES
         INSTALL_RPATH_USE_LINK_PATH True
         )
 install(TARGETS dvrescue RUNTIME DESTINATION bin)
+if (WIN32)
+    install(CODE [[
+        include(BundleUtilities)
+        find_program(dvrescue_INSTALLED
+            NAMES
+                dvrescue
+            PATHS
+                "${CMAKE_INSTALL_PREFIX}/bin/"
+        )
 
+        fixup_bundle(
+            "${dvrescue_INSTALLED}"
+            ""
+            ""
+        )
+
+    ]])
+
+endif ()
