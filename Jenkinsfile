@@ -74,6 +74,7 @@ pipeline {
                                     bat "cmake --build ${CONFIGURATIONS[PLATFORM].agents.build.build_dir} --config Release"
                                     bat "set"
                                     bat "cd ${CONFIGURATIONS[PLATFORM].agents.build.build_dir}\\Source\\Release && dvrescue.exe --version"
+                                    bat "cd ${CONFIGURATIONS[PLATFORM].agents.build.build_dir}\\Source\\Release && dumpbin /DEPENDENTS dvrescue.exe"
                                 }
                             }
                         }
