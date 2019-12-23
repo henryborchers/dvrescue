@@ -147,6 +147,8 @@ pipeline {
                                        sh "sudo cmake --build . --target install"
                                    }
                                     sh "dvrescue --version"
+                                } else{
+                                    bat "cmake --build ${CONFIGURATIONS[PLATFORM].agents.build.build_dir} --config Release --target install"
                                 }
                             }
                         }
