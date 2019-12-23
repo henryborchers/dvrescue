@@ -70,7 +70,7 @@ pipeline {
                                     echo "Location of dvrescue ${dvrescue_executable}"
                                     sh "build/Source/dvrescue --version"
                                 } else{
-                                    bat "cmake -S . -B ${CONFIGURATIONS[PLATFORM].agents.build.build_dir}"
+                                    bat "cmake -S . -B ${CONFIGURATIONS[PLATFORM].agents.build.build_dir} ${CONFIGURATIONS[PLATFORM].agents.build.cmakeConfigurationArguments}"
                                     bat "cmake --build ${CONFIGURATIONS[PLATFORM].agents.build.build_dir} --config Release"
                                     bat "set"
                                     bat "cd ${CONFIGURATIONS[PLATFORM].agents.build.build_dir}\\Source\\Release && dvrescue.exe --version"
