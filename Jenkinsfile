@@ -257,8 +257,14 @@ pipeline {
                             script{
                                 def test_machine = docker.image(CONFIGURATIONS[PLATFORM].agents.test.dockerImage)
                                 test_machine.inside("--user ContainerAdministrator") {
-                                    powershell "msiexec /i ${findFiles(glob: '*.msi')[0]} /qn /norestart /L*v! ${PLATFORM}-msiexec.log"
-                                    bat(script: CONFIGURATIONS[PLATFORM].agents.test.runCommand)
+                                    try{
+                                        powershell "msiexec /i ${findFiles(glob: '*.msi')[0]} /qn /norestart /L*v! ${PLATFORM}-msiexec.log"
+                                        bat(script: CONFIGURATIONS[PLATFORM].agents.test.runCommand)
+                                    } catch( Exception e){
+                                        bat 'tree "C:\\Program Files" /A /F > %PLATFORM%-tree.log'
+                                        bat 'tree "C:\\Program Files (x86)" /A /F >> %PLATFORM%-tree.log'
+                                        error "{e}"
+                                    }
                                 }
                             }
                         }
@@ -267,8 +273,7 @@ pipeline {
                                 archiveArtifacts '*.log'
                             }
                             failure{
-                                bat 'tree "C:\\Program Files" /A /F > %PLATFORM%-tree.log'
-                                bat 'tree "C:\\Program Files (x86)" /A /F >> %PLATFORM%-tree.log'
+
                                 archiveArtifacts '*tree.log'
                             }
                         }
