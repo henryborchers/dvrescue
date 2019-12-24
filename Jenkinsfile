@@ -260,12 +260,6 @@ pipeline {
                                 def test_machine = docker.image(CONFIGURATIONS[PLATFORM].agents.test.dockerImage)
                                 test_machine.inside("--user ContainerAdministrator") {
                                     try{
-                                        powershell "Invoke-WebRequest 'https://aka.ms/vs/16/release/vc_redist.x64.exe' -OutFile vc_redist.x64.exe"
-                                        bat "vc_redist.x64.exe /install /passive /norestart "
-//                                        lock('chocolatey.org') {
-//                                            powershell "Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))"
-//                                            powershell "choco install -y choco install 7zip vcredist140"
-//                                        }
                                         powershell "msiexec /i ${findFiles(glob: '*.msi')[0]} /qn /norestart /L*v! ${PLATFORM}-msiexec.log"
                                         bat(script: CONFIGURATIONS[PLATFORM].agents.test.runCommand)
                                     } catch( Exception e){
