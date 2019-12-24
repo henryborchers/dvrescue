@@ -133,6 +133,7 @@ pipeline {
                             cleanup{
                                 cleanWs(
                                     patterns: [
+                                            [pattern: 'build/*.msi', type: 'INCLUDE'],
                                             [pattern: 'build/*.rpm', type: 'INCLUDE'],
                                             [pattern: 'build/*.deb', type: 'INCLUDE']
                                         ]
