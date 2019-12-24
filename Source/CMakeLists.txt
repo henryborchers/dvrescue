@@ -20,6 +20,7 @@ set_target_properties(dvrescue PROPERTIES
 install(TARGETS dvrescue RUNTIME DESTINATION bin)
 if (WIN32)
     install(CODE [[
+        include(InstallRequiredSystemLibraries)
         include(BundleUtilities)
         find_program(dvrescue_INSTALLED
             NAMES
