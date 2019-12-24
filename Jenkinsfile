@@ -105,7 +105,7 @@ pipeline {
                                         workingDir: "${CONFIGURATIONS[PLATFORM].agents.build.build_dir}"
                                         )
                                 } else {
-                                    bat "cd ${CONFIGURATIONS[PLATFORM].agents.build.build_dir} && cpack -G ${CONFIGURATIONS[PLATFORM].agents.build.cpack_generator} -C Release --verbose --debug"
+                                    bat "cd ${CONFIGURATIONS[PLATFORM].agents.build.build_dir} && cpack -G ${CONFIGURATIONS[PLATFORM].agents.build.cpack_generator} -C Release --verbose"
                                 }
                             }
                         }
