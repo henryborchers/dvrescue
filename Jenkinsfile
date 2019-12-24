@@ -260,8 +260,10 @@ pipeline {
                                 def test_machine = docker.image(CONFIGURATIONS[PLATFORM].agents.test.dockerImage)
                                 test_machine.inside("--user ContainerAdministrator") {
                                     try{
-                                        powershell "Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))"
-                                        powershell "choco install -y vcredist140"
+                                        lock('chocolatey.org') {
+                                            powershell "Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))"
+                                            powershell "choco install -y vcredist140"
+                                        }
                                         powershell "msiexec /i ${findFiles(glob: '*.msi')[0]} /qn /norestart /L*v! ${PLATFORM}-msiexec.log"
                                         bat(script: CONFIGURATIONS[PLATFORM].agents.test.runCommand)
                                     } catch( Exception e){
