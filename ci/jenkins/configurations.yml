@@ -121,7 +121,7 @@ configurations:
             build:
                 dockerfile: ci/jenkins/docker/build/windows-visual-studio-2019/Dockerfile
                 label: windows && docker
-                cmakeConfigurationArguments: '-D CMAKE_INSTALL_PREFIX:PATH="C:\Program Files\dvrescue"'
+                cmakeConfigurationArguments: '-D CMAKE_INSTALL_PREFIX:PATH="C:\Program Files\dvrescue" -D CMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded'
                 cpack_generator: WIX
                 additionalBuildArgs: '--build-arg CMAKE_GENERATOR_PLATFORM=x64 --build-arg VSVSDEVCMD_ARCHM=x64 --build-arg DEPENDENCIES_INSTALL_PATH="C:\Program Files\dvrescue"'
                 build_dir: c:\build
