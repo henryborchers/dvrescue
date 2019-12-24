@@ -262,7 +262,7 @@ pipeline {
                                     try{
                                         lock('chocolatey.org') {
                                             powershell "Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))"
-                                            powershell "choco install -y vcredist140"
+                                            powershell "choco install -y choco install 7zip vcredist140"
                                         }
                                         powershell "msiexec /i ${findFiles(glob: '*.msi')[0]} /qn /norestart /L*v! ${PLATFORM}-msiexec.log"
                                         bat(script: CONFIGURATIONS[PLATFORM].agents.test.runCommand)
