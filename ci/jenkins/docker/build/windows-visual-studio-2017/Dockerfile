@@ -1,5 +1,5 @@
 # escape=`
-ARG FROM_IMAGE=mcr.microsoft.com/dotnet/framework/sdk:4.8-windowsservercore-ltsc2019
+ARG FROM_IMAGE=mcr.microsoft.com/dotnet/framework/sdk:4.7.2-windowsservercore-ltsc2019
 FROM ${FROM_IMAGE}
 
 # Reset the shell.
@@ -79,7 +79,7 @@ RUN git clone https://github.com/MediaArea/MediaInfoLib.git c:/deps/MediaInfoLib
     cmake --build . --config %CMAKE_CONFIG_TYPE% --target install && `
     rmdir c:\deps /s /q
 
-ADD ci/jenkins/docker/build/windows-visual-studio-2017/starup.bat c:\temp\startup.bat
+ADD ci/jenkins/docker/build/windows-visual-studio-2017/startup.bat c:\temp\startup.bat
 ENV VSVSDEVCMD_ARCH=${VSVSDEVCMD_ARCH}
 RUN REG ADD "HKLM\Software\Microsoft\Command Processor" /v AutoRun /t REG_SZ /d c:\temp\startup.bat
 
