@@ -27,7 +27,7 @@ RUN (C:\\TEMP\\vs_buildtools.exe `
     --add Microsoft.VisualStudio.Component.NuGet `
     --installPath C:\BuildTools `
   || IF "%ERRORLEVEL%"=="3010" C:\TEMP\collect.exe -zip:C:\vslogs.zip && EXIT 0 )`
-  && cd C:\BuildTools && dir `
+  && dir && cd C:\BuildTools && dir `
   && C:\TEMP\collect.exe -zip:C:\vslogs.zip `
   && @echo Cleaning up temp files`
   && del /S /F /Q %temp% `
