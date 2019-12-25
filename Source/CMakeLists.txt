@@ -18,7 +18,7 @@ set_target_properties(dvrescue PROPERTIES
         INSTALL_RPATH_USE_LINK_PATH True
         )
 install(TARGETS dvrescue RUNTIME DESTINATION bin)
-if (WIN32)
+if (NOT UNIX)
     include(InstallRequiredSystemLibraries)
     install(CODE [[
         include(BundleUtilities)
