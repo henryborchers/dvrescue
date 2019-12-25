@@ -17,6 +17,7 @@ ADD https://aka.ms/vs/15/release/vs_buildtools.exe C:/TEMP/vs_buildtools.exe
 
 RUN (C:\\TEMP\\vs_buildtools.exe `
     --quiet --wait --norestart --nocache `
+    --installPath C:\BuildTools `
     --channelUri C:\\TEMP\\VisualStudio.chman `
     --installChannelUri C:\\TEMP\\VisualStudio.chman `
     --add Microsoft.VisualStudio.Workload.VCTools `
@@ -25,7 +26,6 @@ RUN (C:\\TEMP\\vs_buildtools.exe `
     --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64	 `
     --includeRecommended `
     --add Microsoft.VisualStudio.Component.NuGet `
-    --installPath C:\BuildTools `
   || IF "%ERRORLEVEL%"=="3010" C:\TEMP\collect.exe -zip:C:\vslogs.zip && EXIT 0 )`
   && dir && cd C:\BuildTools && dir `
   && C:\TEMP\collect.exe -zip:C:\vslogs.zip `
