@@ -21,11 +21,8 @@ RUN (C:\\TEMP\\vs_buildtools.exe `
     --channelUri C:\\TEMP\\VisualStudio.chman `
     --installChannelUri C:\\TEMP\\VisualStudio.chman `
     --add Microsoft.VisualStudio.Workload.VCTools `
-    --add Microsoft.VisualStudio.Component.Windows10SDK `
-    --add Microsoft.VisualStudio.Component.VC.CMake.Project `
     --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64	 `
     --includeRecommended `
-    --add Microsoft.VisualStudio.Component.NuGet `
   || IF "%ERRORLEVEL%"=="3010" C:\TEMP\collect.exe -zip:C:\vslogs.zip && EXIT 0 )`
   && dir && cd C:\BuildTools && dir `
   && C:\TEMP\collect.exe -zip:C:\vslogs.zip `
