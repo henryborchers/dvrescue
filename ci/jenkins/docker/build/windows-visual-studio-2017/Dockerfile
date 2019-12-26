@@ -14,7 +14,7 @@ ADD ${CHANNEL_URL} C:/TEMP/VisualStudio.chman
 # Download and install Build Tools for Visual Studio 2017
 
 ADD https://aka.ms/vs/15/release/vs_buildtools.exe C:/TEMP/vs_buildtools.exe
-
+RUN mkdir c:\\BuildTools
 RUN (C:\\TEMP\\vs_buildtools.exe `
     --quiet --wait --norestart --nocache `
     --installPath "C:\\BuildTools" `
