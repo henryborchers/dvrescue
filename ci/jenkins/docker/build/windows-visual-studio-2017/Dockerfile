@@ -24,6 +24,7 @@ RUN (C:\\TEMP\\vs_buildtools.exe `
     --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64	 `
     --includeRecommended `
   || IF "%ERRORLEVEL%"=="3010" C:\TEMP\collect.exe -zip:C:\vslogs.zip && EXIT 0 )`
+  && tree "C:\\Program Files (x86)" /A /F `
   && dir && cd C:\BuildTools && dir `
   && C:\TEMP\collect.exe -zip:C:\vslogs.zip `
   && @echo Cleaning up temp files`
