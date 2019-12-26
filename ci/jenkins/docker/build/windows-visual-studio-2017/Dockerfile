@@ -17,7 +17,7 @@ ADD https://aka.ms/vs/15/release/vs_buildtools.exe C:/TEMP/vs_buildtools.exe
 RUN mkdir c:\\BuildTools
 RUN (C:\\TEMP\\vs_buildtools.exe `
     --quiet --wait --norestart --nocache `
-    --installPath "C:\\BuildTools" `
+    --installPath C:\\BuildTools `
     --channelUri C:\\TEMP\\VisualStudio.chman `
     --installChannelUri C:\\TEMP\\VisualStudio.chman `
     --add Microsoft.VisualStudio.Workload.VCTools `
@@ -30,7 +30,8 @@ RUN (C:\\TEMP\\vs_buildtools.exe `
   && @echo Cleaning up temp files`
   && del /S /F /Q %temp% `
   && del /S /F /Q %Windir%\Temp `
-  && @echo Done cleaning up files in temp directories
+  && @echo Done cleaning up files in temp directories `
+  && dir && cd C:\BuildTools && dir
 
 
 SHELL ["powershell", "-command"]
