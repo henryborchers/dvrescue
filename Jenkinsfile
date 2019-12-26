@@ -9,7 +9,7 @@ pipeline {
     agent none
     parameters {
       booleanParam defaultValue: true, description: 'Build for windows', name: 'BuildWindows'
-      booleanParam defaultValue: true, description: 'Build for linux', name: 'BuildLinux'
+      booleanParam defaultValue: false, description: 'Build for linux', name: 'BuildLinux'
     }
     stages {
         stage('Build') {
@@ -18,16 +18,16 @@ pipeline {
                     axis {
                         name 'PLATFORM'
                         values(
-                            'centos-7',
-                            'centos-8',
-                            'fedora-31',
-                            'fedora-31-nocurl',
-                            'ubuntu-16.04',
-                            'ubuntu-16.04-nocurl',
-                            'ubuntu-18.04',
+//                            'centos-7',
+//                            'centos-8',
+//                            'fedora-31',
+//                            'fedora-31-nocurl',
+//                            'ubuntu-16.04',
+//                            'ubuntu-16.04-nocurl',
+//                            'ubuntu-18.04',
                             'visual-studio-2017-64bit',
-                            "visual-studio-2019-32bit",
-                            "visual-studio-2019-64bit"
+//                            "visual-studio-2019-32bit",
+//                            "visual-studio-2019-64bit"
                             )
                     }
                 }
