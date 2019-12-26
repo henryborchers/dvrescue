@@ -2,36 +2,36 @@
 ARG FROM_IMAGE=mcr.microsoft.com/dotnet/framework/sdk:4.7.2-windowsservercore-ltsc2019
 FROM ${FROM_IMAGE}
 
-# Reset the shell.
-SHELL ["cmd", "/S", "/C"]
-RUN mkdir c:\\TEMP
-ADD https://aka.ms/vscollect.exe C:/TEMP/collect.exe
-
-# Download channel for fixed install.
-ARG CHANNEL_URL=https://aka.ms/vs/15/release/channel
-ADD ${CHANNEL_URL} C:/TEMP/VisualStudio.chman
+## Reset the shell.
+#SHELL ["cmd", "/S", "/C"]
+#RUN mkdir c:\\TEMP
+#ADD https://aka.ms/vscollect.exe C:/TEMP/collect.exe
+#
+## Download channel for fixed install.
+#ARG CHANNEL_URL=https://aka.ms/vs/15/release/channel
+#ADD ${CHANNEL_URL} C:/TEMP/VisualStudio.chman
 
 # Download and install Build Tools for Visual Studio 2017
 
-ADD https://aka.ms/vs/15/release/vs_buildtools.exe C:/TEMP/vs_buildtools.exe
-RUN mkdir c:\\BuildTools
-RUN (C:\\TEMP\\vs_buildtools.exe `
-    --quiet --wait --norestart --nocache `
-    --installPath C:\\BuildTools `
-    --channelUri C:\\TEMP\\VisualStudio.chman `
-    --installChannelUri C:\\TEMP\\VisualStudio.chman `
-    --add Microsoft.VisualStudio.Workload.VCTools `
-    --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64	 `
-    --includeRecommended `
-  || IF "%ERRORLEVEL%"=="3010" C:\TEMP\collect.exe -zip:C:\vslogs.zip && EXIT 0 )`
-  && tree "C:\\Program Files (x86)" /A /F `
-  && dir && cd C:\BuildTools && dir `
-  && C:\TEMP\collect.exe -zip:C:\vslogs.zip `
-  && @echo Cleaning up temp files`
-  && del /S /F /Q %temp% `
-  && del /S /F /Q %Windir%\Temp `
-  && @echo Done cleaning up files in temp directories `
-  && dir && cd C:\BuildTools && dir
+#ADD https://aka.ms/vs/15/release/vs_buildtools.exe C:/TEMP/vs_buildtools.exe
+#RUN mkdir c:\\BuildTools
+#RUN (C:\\TEMP\\vs_buildtools.exe `
+#    --quiet --wait --norestart --nocache `
+#    --installPath C:\\BuildTools `
+#    --channelUri C:\\TEMP\\VisualStudio.chman `
+#    --installChannelUri C:\\TEMP\\VisualStudio.chman `
+#    --add Microsoft.VisualStudio.Workload.VCTools `
+#    --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64	 `
+#    --includeRecommended `
+#  || IF "%ERRORLEVEL%"=="3010" C:\TEMP\collect.exe -zip:C:\vslogs.zip && EXIT 0 )`
+#  && tree "C:\\Program Files (x86)" /A /F `
+#  && dir && cd C:\BuildTools && dir `
+#  && C:\TEMP\collect.exe -zip:C:\vslogs.zip `
+#  && @echo Cleaning up temp files`
+#  && del /S /F /Q %temp% `
+#  && del /S /F /Q %Windir%\Temp `
+#  && @echo Done cleaning up files in temp directories `
+#  && dir && cd C:\BuildTools && dir
 
 
 SHELL ["powershell", "-command"]
