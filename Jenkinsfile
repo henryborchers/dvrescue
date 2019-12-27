@@ -287,45 +287,48 @@ pipeline {
                             always{
                                 archiveArtifacts '*.log'
                             }
-                        }
-                    }
-                    stage("Install Linux Package"){
-                        options{
-                             skipDefaultCheckout true
-                        }
-                        when{
-                            expression {CONFIGURATIONS[PLATFORM].os_family == "linux"}
-                            beforeAgent true
-                        }
-                        steps{
-                            echo "Testing installing on ${PLATFORM}"
-                            script{
-                                def test_machine = docker.image(CONFIGURATIONS[PLATFORM].agents.test.dockerImage)
-                                unstash "${PLATFORM}-PACKAGE"
-                                test_machine.inside("--user root") {
-                                    if(PLATFORM.contains("ubuntu")){
-                                        sh "apt update && apt-get install -y -f ./${findFiles(glob: '*.deb')[0]}"
-                                    }
-
-                                    if(PLATFORM.contains("fedora")){
-                                        sh "dnf -y localinstall ./${findFiles(glob: '*.rpm')[0]}"
-                                    }
-                                    if(PLATFORM.contains("centos")){
-                                        sh "yum -y update"
-                                        sh "yum install -y epel-release"
-                                        sh "yum -y localinstall ./${findFiles(glob: '*.rpm')[0]}"
-                                    }
-                                    sh "dvrescue --version"
-
-                                }
-                            }
-                        }
-                        post{
                             cleanup{
-                                cleanWs()
+                                cleanWs( notFailBuild: true)
                             }
                         }
                     }
+//                    stage("Install Linux Package"){
+//                        options{
+//                             skipDefaultCheckout true
+//                        }
+//                        when{
+//                            expression {CONFIGURATIONS[PLATFORM].os_family == "linux"}
+//                            beforeAgent true
+//                        }
+//                        steps{
+//                            echo "Testing installing on ${PLATFORM}"
+//                            script{
+//                                def test_machine = docker.image(CONFIGURATIONS[PLATFORM].agents.test.dockerImage)
+//                                unstash "${PLATFORM}-PACKAGE"
+//                                test_machine.inside("--user root") {
+//                                    if(PLATFORM.contains("ubuntu")){
+//                                        sh "apt update && apt-get install -y -f ./${findFiles(glob: '*.deb')[0]}"
+//                                    }
+//
+//                                    if(PLATFORM.contains("fedora")){
+//                                        sh "dnf -y localinstall ./${findFiles(glob: '*.rpm')[0]}"
+//                                    }
+//                                    if(PLATFORM.contains("centos")){
+//                                        sh "yum -y update"
+//                                        sh "yum install -y epel-release"
+//                                        sh "yum -y localinstall ./${findFiles(glob: '*.rpm')[0]}"
+//                                    }
+//                                    sh "dvrescue --version"
+//
+//                                }
+//                            }
+//                        }
+//                        post{
+//                            cleanup{
+//                                cleanWs()
+//                            }
+//                        }
+//                    }
 //                    stage("Install MSI Package"){
 //                        options{
 //                              skipDefaultCheckout true
