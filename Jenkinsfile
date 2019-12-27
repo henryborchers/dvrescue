@@ -215,38 +215,6 @@ pipeline {
 
 
                 }
-                excludes {
-                    exclude {
-                        axis {
-                            name 'INSTALLER_PACKAGE'
-                            values 'native-linux'
-                        }
-                        axis {
-                            name 'PLATFORM'
-                            values(
-                                'visual-studio-2017-64bit',
-                                'visual-studio-2019-32bit',
-                                'visual-studio-2019-64bit',
-                                )
-                        }
-                    }
-                    exclude {
-                        axis {
-                            name 'INSTALLER_PACKAGE'
-                            values 'MSI'
-                        }
-                        axis {
-                            name 'PLATFORM'
-                            values(
-                                'centos-7',
-                                'centos-8',
-                                'fedora-31',
-                                'ubuntu-16.04',
-                                'ubuntu-18.04',
-                                )
-                        }
-                    }
-                }
                 stages {
                     stage("Install Linux Package"){
                         options{
