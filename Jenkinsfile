@@ -260,6 +260,7 @@ pipeline {
                                 if(CONFIGURATIONS[PLATFORM].os_family == "windows"){
                                     test_machine.inside{
                                         powershell(script: CONFIGURATIONS[PLATFORM].agents.test.installCommand, label: "Installing ${PLATFORM} ${INSTALLER_PACKAGE}")
+                                        bat(script: CONFIGURATIONS[PLATFORM].agents.test.runCommand, label: "Running dvrescue on ${PLATFORM}")
                                     }
                                 }
                             }
