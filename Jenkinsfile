@@ -263,6 +263,24 @@ pipeline {
                                         bat(script: CONFIGURATIONS[PLATFORM].agents.test.runCommand, label: "Running dvrescue on ${PLATFORM}")
                                     }
                                 }
+                                if(CONFIGURATIONS[PLATFORM].os_family == "linux"){
+                                    test_machine.inside("--user root") {
+                                        if(PLATFORM.contains("ubuntu")){
+                                            sh "apt update && apt-get install -y -f ./${findFiles(glob: '*.deb')[0]}"
+                                        }
+
+                                        if(PLATFORM.contains("fedora")){
+                                            sh "dnf -y localinstall ./${findFiles(glob: '*.rpm')[0]}"
+                                        }
+                                        if(PLATFORM.contains("centos")){
+                                            sh "yum -y update"
+                                            sh "yum install -y epel-release"
+                                            sh "yum -y localinstall ./${findFiles(glob: '*.rpm')[0]}"
+                                        }
+                                        sh "dvrescue --version"
+
+                                    }
+                                }
                             }
                         }
                         post{
