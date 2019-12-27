@@ -273,9 +273,10 @@ pipeline {
                                             sh "dnf -y localinstall ./${findFiles(glob: '*.rpm')[0]} | tee ${PLATFORM}-install.log"
                                         }
                                         if(PLATFORM.contains("centos")){
-                                            sh "yum -y update"
-                                            sh "yum install -y epel-release"
-                                            sh "yum -y localinstall ./${findFiles(glob: '*.rpm')[0]} | tee ${PLATFORM}-install.log"
+                                            sh(script: CONFIGURATIONS[PLATFORM].agents.test.installCommand, label: "Installing ${PLATFORM} ${INSTALLER_PACKAGE}")
+//                                            sh "yum -y update"
+//                                            sh "yum install -y epel-release"
+//                                            sh "yum -y localinstall ./${findFiles(glob: '*.rpm')[0]} | tee ${PLATFORM}-install.log"
                                         }
                                         sh "dvrescue --version"
 

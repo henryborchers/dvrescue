@@ -13,6 +13,7 @@ configurations:
             test:
               dockerImage: centos:7
               label: linux && docker
+              installCommand: 'yum -y update && yum install -y epel-release && yum -y localinstall dvrescue*.rpm | tee centos-7-msiexec.log'
     centos-8:
         os: centos
         os_family: linux
@@ -27,6 +28,7 @@ configurations:
             test:
                 dockerImage: centos:8
                 label: linux && docker
+                installCommand: 'yum -y update && yum install -y epel-release && yum -y localinstall dvrescue*.rpm | tee centos-8-msiexec.log'
     fedora-31:
         os: fedora
         os_family: linux
