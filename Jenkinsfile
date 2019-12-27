@@ -254,6 +254,11 @@ pipeline {
                         }
                         steps{
                             echo "installing"
+                            script{
+                                if(CONFIGURATIONS[PLATFORM].os_family == "windows"){
+                                    powershell(CONFIGURATIONS[PLATFORM].agents.test.installCommand)
+                                }
+                            }
                         }
                     }
                     stage("Install Linux Package"){
