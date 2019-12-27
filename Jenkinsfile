@@ -265,6 +265,11 @@ pipeline {
                                 }
                             }
                         }
+                        post{
+                            always{
+                                archiveArtifacts '*.log'
+                            }
+                        }
                     }
                     stage("Install Linux Package"){
                         options{
@@ -303,42 +308,42 @@ pipeline {
                             }
                         }
                     }
-                    stage("Install MSI Package"){
-                        options{
-                              skipDefaultCheckout true
-                        }
-                        when{
-                            expression { CONFIGURATIONS[PLATFORM].os_family == "windows"}
-                            beforeAgent true
-                        }
-                        steps{
-                            echo "installing msi"
-                            unstash "${PLATFORM}-PACKAGE"
-                            script{
-                                def test_machine = docker.image(CONFIGURATIONS[PLATFORM].agents.test.dockerImage)
-                                test_machine.inside("--user ContainerAdministrator") {
-                                    try{
-                                        powershell "msiexec /i ${findFiles(glob: '*.msi')[0]} /qn /norestart /L*v! ${PLATFORM}-msiexec.log"
-                                        bat(script: CONFIGURATIONS[PLATFORM].agents.test.runCommand)
-                                    } catch( Exception e){
-                                        bat 'tree "C:\\Program Files" /A /F > %PLATFORM%-tree.log'
-                                        bat 'tree "C:\\Program Files (x86)" /A /F >> %PLATFORM%-tree.log'
-                                        error "${e}"
-                                    }
-                                }
-                            }
-                        }
-                        post{
-                            always{
-                                archiveArtifacts '*.log'
-                            }
-                            failure{
-
-                                archiveArtifacts '*tree.log'
-                            }
-                        }
-                    }
-                }
+//                    stage("Install MSI Package"){
+//                        options{
+//                              skipDefaultCheckout true
+//                        }
+//                        when{
+//                            expression { CONFIGURATIONS[PLATFORM].os_family == "windows"}
+//                            beforeAgent true
+//                        }
+//                        steps{
+//                            echo "installing msi"
+//                            unstash "${PLATFORM}-PACKAGE"
+//                            script{
+//                                def test_machine = docker.image(CONFIGURATIONS[PLATFORM].agents.test.dockerImage)
+//                                test_machine.inside("--user ContainerAdministrator") {
+//                                    try{
+//                                        powershell "msiexec /i ${findFiles(glob: '*.msi')[0]} /qn /norestart /L*v! ${PLATFORM}-msiexec.log"
+//                                        bat(script: CONFIGURATIONS[PLATFORM].agents.test.runCommand)
+//                                    } catch( Exception e){
+//                                        bat 'tree "C:\\Program Files" /A /F > %PLATFORM%-tree.log'
+//                                        bat 'tree "C:\\Program Files (x86)" /A /F >> %PLATFORM%-tree.log'
+//                                        error "${e}"
+//                                    }
+//                                }
+//                            }
+//                        }
+//                        post{
+//                            always{
+//                                archiveArtifacts '*.log'
+//                            }
+//                            failure{
+//
+//                                archiveArtifacts '*tree.log'
+//                            }
+//                        }
+//                    }
+//                }
             }
         }
     }

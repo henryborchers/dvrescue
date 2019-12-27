@@ -111,7 +111,7 @@ configurations:
                 build_dir: c:\build
             test:
                 dockerImage: mcr.microsoft.com/windows/servercore:ltsc2019
-                installCommand: 'msiexec /i @(Get-ChildItem -Filter *.msi)[0] /q'
+                installCommand: 'msiexec /i @(Get-ChildItem -Filter *.msi)[0] /qn /norestart /L*v! visual-studio-2019-32bit-msiexec.log'
                 runCommand: 'cd "C:\Program Files (x86)\dvrescue\bin" && dvrescue.exe --version'
                 label: windows && docker
     visual-studio-2019-64bit:
@@ -128,7 +128,7 @@ configurations:
                 build_dir: c:\build
             test:
                 dockerImage: mcr.microsoft.com/windows/servercore:ltsc2019
-                installCommand: 'msiexec /i @(Get-ChildItem -Filter *.msi)[0] /q'
+                installCommand: 'msiexec /i @(Get-ChildItem -Filter *.msi)[0] /qn /norestart /L*v! visual-studio-2017-64bit-msiexec.log'
                 runCommand: 'cd "C:\Program Files\dvrescue\bin" && dvrescue.exe --version'
                 label: windows && docker
     visual-studio-2017-64bit:
@@ -145,6 +145,6 @@ configurations:
                 build_dir: c:\build
             test:
                 dockerImage: mcr.microsoft.com/windows/servercore:ltsc2019
-                installCommand: 'msiexec /i @(Get-ChildItem -Filter *.msi)[0] /q'
+                installCommand: 'msiexec /i @(Get-ChildItem -Filter *.msi)[0] /qn /norestart /L*v! visual-studio-2019-64bit-msiexec.log'
                 runCommand: 'cd "C:\Program Files\dvrescue\bin" && dvrescue.exe --version'
                 label: windows && docker
