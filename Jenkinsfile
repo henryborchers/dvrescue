@@ -254,9 +254,13 @@ pipeline {
                         }
                         steps{
                             echo "installing"
+                            unstash "${PLATFORM}-PACKAGE"
                             script{
+                                def test_machine = docker.image(CONFIGURATIONS[PLATFORM].agents.test.dockerImage)
                                 if(CONFIGURATIONS[PLATFORM].os_family == "windows"){
-                                    powershell(CONFIGURATIONS[PLATFORM].agents.test.installCommand)
+                                    test_machine.inside{
+                                        powershell(CONFIGURATIONS[PLATFORM].agents.test.installCommand)
+                                    }
                                 }
                             }
                         }
