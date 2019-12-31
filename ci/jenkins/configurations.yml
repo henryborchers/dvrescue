@@ -72,6 +72,7 @@ configurations:
             test:
                 dockerImage: ubuntu:16.04
                 label: linux && docker
+                installCommand: 'apt update && apt-get install -y -f ./dvrescue*.deb | tee ubuntu-16.04-install.log'
     ubuntu-16.04-nocurl:
         os: ubuntu
         os_family: linux
@@ -84,8 +85,9 @@ configurations:
                 additionalBuildArgs: '--build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g)'
                 build_dir: build
             test:
-                dockerImage: ubuntu:18.04
+                dockerImage: ubuntu:16.04
                 label: linux && docker
+                installCommand: 'apt update && apt-get install -y -f ./*.deb | tee ubuntu-16.04-nocurl-install.log'
     ubuntu-18.04:
         os: ubuntu
         os_family: linux
@@ -100,6 +102,7 @@ configurations:
             test:
                 dockerImage: ubuntu:18.04
                 label: linux && docker
+                installCommand: 'apt update && apt-get install -y -f ./dvrescue*.deb | tee ubuntu-18.04-install.log'
     visual-studio-2019-32bit:
         os: windows-ltsc2019
         os_family: windows
