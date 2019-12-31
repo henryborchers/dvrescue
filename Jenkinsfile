@@ -261,8 +261,11 @@ pipeline {
                                     test_machine.inside{
                                         if(INSTALLER_PACKAGE == "MSI"){
                                             powershell(script: CONFIGURATIONS[PLATFORM].agents.test.installCommand, label: "Installing ${PLATFORM} ${INSTALLER_PACKAGE}")
-                                            bat(script: CONFIGURATIONS[PLATFORM].agents.test.runCommand, label: "Running dvrescue on ${PLATFORM}")
                                         }
+                                        if(INSTALLER_PACKAGE == "NSIS"){
+                                            powershell(script: '(Get-ChildItem -Filter dvrescue-*.exe)[0] /S', label: "Installing ${PLATFORM} ${INSTALLER_PACKAGE}")
+                                        }
+                                        bat(script: CONFIGURATIONS[PLATFORM].agents.test.runCommand, label: "Running dvrescue on ${PLATFORM}")
                                     }
                                 }
                                 if(CONFIGURATIONS[PLATFORM].os_family == "linux"){
