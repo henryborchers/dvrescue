@@ -9,7 +9,6 @@ configurations:
                 label: "linux && docker"
                 cpackGenerators:
                     - RPM
-                    - ZIP
                 additionalBuildArgs: '--build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g)'
                 build_dir: build
             test:
@@ -122,6 +121,7 @@ configurations:
                 cmakeConfigurationArguments: '-D CMAKE_INSTALL_PREFIX:PATH="C:\Program Files (x86)\dvrescue"'
                 cpackGenerators:
                     - WIX
+                    - NSIS
                 additionalBuildArgs: ''
                 build_dir: c:\build
             test:
@@ -140,6 +140,7 @@ configurations:
                 cmakeConfigurationArguments: '-D CMAKE_INSTALL_PREFIX:PATH="C:\Program Files\dvrescue"'
                 cpackGenerators:
                     - WIX
+                    - NSIS
                 additionalBuildArgs: '--build-arg CMAKE_GENERATOR_PLATFORM=x64 --build-arg VSVSDEVCMD_ARCHM=x64 --build-arg DEPENDENCIES_INSTALL_PATH="C:\Program Files\dvrescue"'
                 build_dir: c:\build
             test:
@@ -158,6 +159,7 @@ configurations:
                 cmakeConfigurationArguments: '-D CMAKE_INSTALL_PREFIX:PATH="C:\Program Files\dvrescue"'
                 cpackGenerators:
                     - WIX
+                    - NSIS
                 additionalBuildArgs: '--build-arg CMAKE_GENERATOR_PLATFORM=x64 --build-arg VSVSDEVCMD_ARCHM=x64 --build-arg DEPENDENCIES_INSTALL_PATH="C:\Program Files\dvrescue"'
                 build_dir: c:\build
             test:
