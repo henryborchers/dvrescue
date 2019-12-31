@@ -101,12 +101,12 @@ pipeline {
                             script{
                                 if(isUnix()){
                                     cpack(
-                                        arguments: "-G ${CONFIGURATIONS[PLATFORM].agents.build.cpack_generator} --verbose",
+                                        arguments: "-G ${CONFIGURATIONS[PLATFORM].agents.build.cpackGenerators} --verbose",
                                         installation: 'InSearchPath',
                                         workingDir: "${CONFIGURATIONS[PLATFORM].agents.build.build_dir}"
                                         )
                                 } else {
-                                    bat "cd ${CONFIGURATIONS[PLATFORM].agents.build.build_dir} && cpack -G ${CONFIGURATIONS[PLATFORM].agents.build.cpack_generator} -C Release --verbose"
+                                    bat "cd ${CONFIGURATIONS[PLATFORM].agents.build.build_dir} && cpack -G ${CONFIGURATIONS[PLATFORM].agents.build.cpackGenerators} -C Release --verbose"
                                 }
                             }
                         }
@@ -265,10 +265,6 @@ pipeline {
                                 }
                                 if(CONFIGURATIONS[PLATFORM].os_family == "linux"){
                                     test_machine.inside("--user root") {
-//                                        if(PLATFORM.contains("ubuntu")){
-//                                            sh "apt update && apt-get install -y -f ./${findFiles(glob: '*.deb')[0]} | tee ${PLATFORM}-install.log"
-//                                        } else{
-//                                        }
                                             sh(script: CONFIGURATIONS[PLATFORM].agents.test.installCommand, label: "Installing ${PLATFORM} ${INSTALLER_PACKAGE}")
                                         sh "dvrescue --version"
 
