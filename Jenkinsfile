@@ -254,7 +254,6 @@ pipeline {
                              skipDefaultCheckout true
                         }
                         steps{
-                            echo "installing"
                             unstash "${PLATFORM}-PACKAGE"
                             script{
                                 def test_machine = docker.image(CONFIGURATIONS[PLATFORM].agents.test.dockerImage)
