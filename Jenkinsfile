@@ -115,7 +115,10 @@ pipeline {
                                 script{
                                     if(CONFIGURATIONS[PLATFORM].os_family == "windows"){
                                         bat "if not exist build mkdir build"
-                                        bat "cd build && copy ${CONFIGURATIONS[PLATFORM].agents.build.build_dir}\\*.msi"
+                                        bat(
+                                            script: "cd build && copy ${CONFIGURATIONS[PLATFORM].agents.build.build_dir}\\*.msi && copy ${CONFIGURATIONS[PLATFORM].agents.build.build_dir}\\dvrescue-*.exe",
+                                            label: "Copying packages to workspace"
+                                        )
                                     }
                                 }
                                 dir("build"){
@@ -263,7 +266,9 @@ pipeline {
                                             powershell(script: CONFIGURATIONS[PLATFORM].agents.test.installCommand, label: "Installing ${PLATFORM} ${INSTALLER_PACKAGE}")
                                         }
                                         if(INSTALLER_PACKAGE == "NSIS"){
-                                            powershell(script: '(Get-ChildItem -Filter dvrescue-*.exe)[0] /S', label: "Installing ${PLATFORM} ${INSTALLER_PACKAGE}")
+                                            bat "dir"
+                                            bat "${findFiles(glob: '**/dvrescue-*.exe')[0]} /S"
+//                                            powershell(script: '& (Get-ChildItem -Filter dvrescue-*.exe)[0] /S', label: "Installing ${PLATFORM} ${INSTALLER_PACKAGE}")
                                         }
                                         bat(script: CONFIGURATIONS[PLATFORM].agents.test.runCommand, label: "Running dvrescue on ${PLATFORM}")
                                     }
