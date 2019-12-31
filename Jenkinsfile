@@ -276,7 +276,7 @@ pipeline {
                         }
                         post{
                             always{
-                                archiveArtifacts '*.log'
+                                archiveArtifacts  allowEmptyArchive: true, artifacts: '*.log'
                             }
                             cleanup{
                                 cleanWs( notFailBuild: true)
