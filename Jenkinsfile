@@ -73,9 +73,7 @@ pipeline {
                                 } else{
                                     bat "cmake -S . -B ${CONFIGURATIONS[PLATFORM].agents.build.build_dir} ${CONFIGURATIONS[PLATFORM].agents.build.cmakeConfigurationArguments}"
                                     bat "cmake --build ${CONFIGURATIONS[PLATFORM].agents.build.build_dir} --config Release"
-                                    bat "set"
                                     bat "cd ${CONFIGURATIONS[PLATFORM].agents.build.build_dir}\\Source\\Release && dvrescue.exe --version"
-                                    bat "cd ${CONFIGURATIONS[PLATFORM].agents.build.build_dir}\\Source\\Release && dumpbin /DEPENDENTS dvrescue.exe"
                                 }
                             }
                         }
@@ -266,9 +264,7 @@ pipeline {
                                             powershell(script: CONFIGURATIONS[PLATFORM].agents.test.installCommand, label: "Installing ${PLATFORM} ${INSTALLER_PACKAGE}")
                                         }
                                         if(INSTALLER_PACKAGE == "NSIS"){
-                                            bat "dir"
                                             bat "${findFiles(glob: '**/dvrescue-*.exe')[0]} /S"
-//                                            powershell(script: '& (Get-ChildItem -Filter dvrescue-*.exe)[0] /S', label: "Installing ${PLATFORM} ${INSTALLER_PACKAGE}")
                                         }
                                         bat(script: CONFIGURATIONS[PLATFORM].agents.test.runCommand, label: "Running dvrescue on ${PLATFORM}")
                                     }
@@ -291,78 +287,6 @@ pipeline {
                             }
                         }
                     }
-//                    stage("Install Linux Package"){
-//                        options{
-//                             skipDefaultCheckout true
-//                        }
-//                        when{
-//                            expression {CONFIGURATIONS[PLATFORM].os_family == "linux"}
-//                            beforeAgent true
-//                        }
-//                        steps{
-//                            echo "Testing installing on ${PLATFORM}"
-//                            script{
-//                                def test_machine = docker.image(CONFIGURATIONS[PLATFORM].agents.test.dockerImage)
-//                                unstash "${PLATFORM}-PACKAGE"
-//                                test_machine.inside("--user root") {
-//                                    if(PLATFORM.contains("ubuntu")){
-//                                        sh "apt update && apt-get install -y -f ./${findFiles(glob: '*.deb')[0]}"
-//                                    }
-//
-//                                    if(PLATFORM.contains("fedora")){
-//                                        sh "dnf -y localinstall ./${findFiles(glob: '*.rpm')[0]}"
-//                                    }
-//                                    if(PLATFORM.contains("centos")){
-//                                        sh "yum -y update"
-//                                        sh "yum install -y epel-release"
-//                                        sh "yum -y localinstall ./${findFiles(glob: '*.rpm')[0]}"
-//                                    }
-//                                    sh "dvrescue --version"
-//
-//                                }
-//                            }
-//                        }
-//                        post{
-//                            cleanup{
-//                                cleanWs()
-//                            }
-//                        }
-//                    }
-//                    stage("Install MSI Package"){
-//                        options{
-//                              skipDefaultCheckout true
-//                        }
-//                        when{
-//                            expression { CONFIGURATIONS[PLATFORM].os_family == "windows"}
-//                            beforeAgent true
-//                        }
-//                        steps{
-//                            echo "installing msi"
-//                            unstash "${PLATFORM}-PACKAGE"
-//                            script{
-//                                def test_machine = docker.image(CONFIGURATIONS[PLATFORM].agents.test.dockerImage)
-//                                test_machine.inside("--user ContainerAdministrator") {
-//                                    try{
-//                                        powershell "msiexec /i ${findFiles(glob: '*.msi')[0]} /qn /norestart /L*v! ${PLATFORM}-msiexec.log"
-//                                        bat(script: CONFIGURATIONS[PLATFORM].agents.test.runCommand)
-//                                    } catch( Exception e){
-//                                        bat 'tree "C:\\Program Files" /A /F > %PLATFORM%-tree.log'
-//                                        bat 'tree "C:\\Program Files (x86)" /A /F >> %PLATFORM%-tree.log'
-//                                        error "${e}"
-//                                    }
-//                                }
-//                            }
-//                        }
-//                        post{
-//                            always{
-//                                archiveArtifacts '*.log'
-//                            }
-//                            failure{
-//
-//                                archiveArtifacts '*tree.log'
-//                            }
-//                        }
-//                    }
                 }
             }
         }
