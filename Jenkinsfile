@@ -210,7 +210,7 @@ pipeline {
                     }
                     axis {
                         name 'INSTALLER_PACKAGE'
-                        values 'native-linux', 'MSI'
+                        values 'native-linux', 'MSI', 'NSIS'
                     }
 
 
@@ -233,7 +233,7 @@ pipeline {
                     exclude {
                         axis {
                             name 'INSTALLER_PACKAGE'
-                            values 'MSI'
+                            values 'MSI', 'NSIS'
                         }
                         axis {
                             name 'PLATFORM'
@@ -259,8 +259,10 @@ pipeline {
                                 def test_machine = docker.image(CONFIGURATIONS[PLATFORM].agents.test.dockerImage)
                                 if(CONFIGURATIONS[PLATFORM].os_family == "windows"){
                                     test_machine.inside{
-                                        powershell(script: CONFIGURATIONS[PLATFORM].agents.test.installCommand, label: "Installing ${PLATFORM} ${INSTALLER_PACKAGE}")
-                                        bat(script: CONFIGURATIONS[PLATFORM].agents.test.runCommand, label: "Running dvrescue on ${PLATFORM}")
+                                        if(INSTALLER_PACKAGE == "MSI"){
+                                            powershell(script: CONFIGURATIONS[PLATFORM].agents.test.installCommand, label: "Installing ${PLATFORM} ${INSTALLER_PACKAGE}")
+                                            bat(script: CONFIGURATIONS[PLATFORM].agents.test.runCommand, label: "Running dvrescue on ${PLATFORM}")
+                                        }
                                     }
                                 }
                                 if(CONFIGURATIONS[PLATFORM].os_family == "linux"){
