@@ -43,6 +43,7 @@ configurations:
             test:
                 dockerImage: fedora:31
                 label: linux && docker
+                installCommand: 'dnf -y localinstall dvrescue*.rpm | tee fedora-31-install.log'
     fedora-31-nocurl:
         os: fedora
         os_family: linux
