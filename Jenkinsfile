@@ -101,12 +101,12 @@ pipeline {
                             script{
                                 if(isUnix()){
                                     cpack(
-                                        arguments: "-G ${CONFIGURATIONS[PLATFORM].agents.build.cpackGenerators} --verbose",
+                                        arguments: "-G ${CONFIGURATIONS[PLATFORM].agents.build.cpackGenerators.join(';')} --verbose",
                                         installation: 'InSearchPath',
                                         workingDir: "${CONFIGURATIONS[PLATFORM].agents.build.build_dir}"
                                         )
                                 } else {
-                                    bat "cd ${CONFIGURATIONS[PLATFORM].agents.build.build_dir} && cpack -G ${CONFIGURATIONS[PLATFORM].agents.build.cpackGenerators} -C Release --verbose"
+                                    bat "cd ${CONFIGURATIONS[PLATFORM].agents.build.build_dir} && cpack -G ${CONFIGURATIONS[PLATFORM].agents.build.cpackGenerators.join(';')} -C Release --verbose"
                                 }
                             }
                         }

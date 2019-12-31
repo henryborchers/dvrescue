@@ -7,7 +7,9 @@ configurations:
             build:
                 dockerfile: "ci/jenkins/docker/build/centos-7/Dockerfile"
                 label: "linux && docker"
-                cpackGenerators: RPM
+                cpackGenerators:
+                    - RPM
+                    - ZIP
                 additionalBuildArgs: '--build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g)'
                 build_dir: build
             test:
@@ -22,7 +24,8 @@ configurations:
             build:
                 dockerfile: ci/jenkins/docker/build/centos-8/Dockerfile
                 label: linux && docker
-                cpackGenerators: RPM
+                cpackGenerators:
+                    - RPM
                 additionalBuildArgs: '--build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g)'
                 build_dir: build
             test:
@@ -37,7 +40,8 @@ configurations:
             build:
                 dockerfile: ci/jenkins/docker/build/fedora-31/Dockerfile
                 label: linux && docker
-                cpackGenerators: RPM
+                cpackGenerators:
+                    - RPM
                 additionalBuildArgs: '--build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g)'
                 build_dir: build
             test:
@@ -52,7 +56,8 @@ configurations:
             build:
                 dockerfile: ci/jenkins/docker/build/fedora-31-nocurl/Dockerfile
                 label: linux && docker
-                cpackGenerators: RPM
+                cpackGenerators:
+                    - RPM
                 additionalBuildArgs: '--build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g)'
                 build_dir: build
             test:
@@ -66,7 +71,8 @@ configurations:
             build:
                 dockerfile: ci/jenkins/docker/build/ubuntu-16.04/Dockerfile
                 label: linux && docker
-                cpackGenerators: DEB
+                cpackGenerators:
+                    - DEB
                 additionalBuildArgs: '--build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g)'
                 build_dir: build
             test:
@@ -81,7 +87,8 @@ configurations:
             build:
                 dockerfile: ci/jenkins/docker/build/ubuntu-16.04-nocurl/Dockerfile
                 label: linux && docker
-                cpackGenerators: DEB
+                cpackGenerators:
+                    - DEB
                 additionalBuildArgs: '--build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g)'
                 build_dir: build
             test:
@@ -96,7 +103,8 @@ configurations:
             build:
                 dockerfile: ci/jenkins/docker/build/ubuntu-18.04/Dockerfile
                 label: linux && docker
-                cpackGenerators: DEB
+                cpackGenerators:
+                    - DEB
                 additionalBuildArgs: '--build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g)'
                 build_dir: build
             test:
@@ -112,7 +120,8 @@ configurations:
                 dockerfile: ci/jenkins/docker/build/windows-visual-studio-2019/Dockerfile
                 label: windows && docker
                 cmakeConfigurationArguments: '-D CMAKE_INSTALL_PREFIX:PATH="C:\Program Files (x86)\dvrescue"'
-                cpackGenerators: WIX
+                cpackGenerators:
+                    - WIX
                 additionalBuildArgs: ''
                 build_dir: c:\build
             test:
@@ -129,7 +138,8 @@ configurations:
                 dockerfile: ci/jenkins/docker/build/windows-visual-studio-2019/Dockerfile
                 label: windows && docker
                 cmakeConfigurationArguments: '-D CMAKE_INSTALL_PREFIX:PATH="C:\Program Files\dvrescue"'
-                cpackGenerators: WIX
+                cpackGenerators:
+                    - WIX
                 additionalBuildArgs: '--build-arg CMAKE_GENERATOR_PLATFORM=x64 --build-arg VSVSDEVCMD_ARCHM=x64 --build-arg DEPENDENCIES_INSTALL_PATH="C:\Program Files\dvrescue"'
                 build_dir: c:\build
             test:
@@ -146,7 +156,8 @@ configurations:
                 dockerfile: ci/jenkins/docker/build/windows-visual-studio-2017/Dockerfile
                 label: windows && docker
                 cmakeConfigurationArguments: '-D CMAKE_INSTALL_PREFIX:PATH="C:\Program Files\dvrescue"'
-                cpackGenerators: WIX
+                cpackGenerators:
+                    - WIX
                 additionalBuildArgs: '--build-arg CMAKE_GENERATOR_PLATFORM=x64 --build-arg VSVSDEVCMD_ARCHM=x64 --build-arg DEPENDENCIES_INSTALL_PATH="C:\Program Files\dvrescue"'
                 build_dir: c:\build
             test:
