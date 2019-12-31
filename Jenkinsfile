@@ -119,7 +119,7 @@ pipeline {
                                     }
                                 }
                                 dir("build"){
-                                    stash includes: '*.rpm,*.deb,*.msi', name: "${PLATFORM}-PACKAGE"
+                                    stash includes: 'dvrescue-*.rpm,dvrescue-*.deb,dvrescue-*.msi', name: "${PLATFORM}-PACKAGE"
                                     script{
                                         if(PLATFORM.contains("ubuntu")){
                                             sh "cat ${findFiles(glob: '**/control')[0]}"
